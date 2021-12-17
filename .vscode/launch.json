@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-FschoolApplication<fschool>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.fschool.fschool.FschoolApplication",
+            "projectName": "fschool",
+            "args": ""
+        }
+    ]
+}
