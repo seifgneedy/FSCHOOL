@@ -1,4 +1,4 @@
-package com.fschool.fschool.Model;
+package com.fschool.fschool.Model.Entities;
 
 import java.util.*;
 

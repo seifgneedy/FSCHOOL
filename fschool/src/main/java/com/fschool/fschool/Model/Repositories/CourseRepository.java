@@ -1,4 +1,6 @@
-package com.fschool.fschool.Model;
+package com.fschool.fschool.Model.Repositories;
+
+import com.fschool.fschool.Model.Entities.Course;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
