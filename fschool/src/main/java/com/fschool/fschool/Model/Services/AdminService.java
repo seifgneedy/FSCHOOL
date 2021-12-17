@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
-    @Autowired
     UserRepository userRepository;
     @Autowired
+    AdminService(UserRepository userRepository){
+        this.userRepository=userRepository;
+    }
     CourseRepository courseRepository;
-    
+    @Autowired
+    AdminService(CourseRepository courseRepository){
+        this.courseRepository=courseRepository;
+    }
     public List<User> getStudents(){
         return userRepository.findByRole("Student");
     }
