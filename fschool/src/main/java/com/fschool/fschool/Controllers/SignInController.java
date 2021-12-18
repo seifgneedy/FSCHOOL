@@ -8,7 +8,7 @@ public class SignInController {
     final static int EIGHT_DAYS=8 * 24 * 60 * 60;
     @Autowired
     private Authentication authentication;
-    @GetMapping("/sign-in")
+    @PostMapping("/sign-in")
     public boolean signIn (@RequestParam String id,
                         @RequestParam String password,
                         @RequestParam String role,
@@ -17,6 +17,7 @@ public class SignInController {
             return false;
         Cookie cookie = new Cookie("id",id);
         cookie.setMaxAge(EIGHT_DAYS);
+        cookie.setSecure(true);
         System.out.println("entered id " + id);
         response.addCookie(cookie);
         return true;
