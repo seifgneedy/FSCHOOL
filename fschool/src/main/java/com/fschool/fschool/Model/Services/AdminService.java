@@ -8,13 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
     UserRepository userRepository;
-    @Autowired
-    AdminService(UserRepository userRepository){
-        this.userRepository=userRepository;
-    }
     CourseRepository courseRepository;
     @Autowired
-    AdminService(CourseRepository courseRepository){
+    AdminService(UserRepository userRepository,CourseRepository courseRepository){
+        this.userRepository=userRepository;
         this.courseRepository=courseRepository;
     }
     public List<User> getStudents(){
