@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Authentication",
+            "request": "launch",
+            "mainClass": "com.fschool.fschool.Controllers.Authentication",
+            "projectName": "fschool"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-FschoolApplication<fschool>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
