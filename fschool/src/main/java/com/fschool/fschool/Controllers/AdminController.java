@@ -35,7 +35,7 @@ public class AdminController {
     @PostMapping("/admin/add/user")
     public boolean addUser (@RequestParam String email,
                         @RequestParam String firstName, @RequestParam String lastName,
-                        @RequestParam Char sex, @RequestParam LocalDate birthDate,
+                        @RequestParam char sex, @RequestParam LocalDate birthDate,
                         @RequestParam String password, @RequestParam String role){
     
         return adminService.addUser(email, firstName, lastName, sex, birthDate, password, role);    
@@ -51,7 +51,7 @@ public class AdminController {
 
     @GetMapping(path = "admin/course")
     public Course getCourse(@RequestParam String code) {
-        Course course = adminService.getCourse();
+        Course course = adminService.getCourse(code);
         if(course == null){
             //to do : handle to course found by this ID;
         }

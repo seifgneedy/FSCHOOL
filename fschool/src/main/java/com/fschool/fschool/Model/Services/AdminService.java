@@ -1,10 +1,13 @@
 package com.fschool.fschool.Model.Services;
 
+import java.time.LocalDate;
 import java.util.*;
 import com.fschool.fschool.Model.Repositories.*;
 import com.fschool.fschool.Model.Entities.*;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,7 +35,7 @@ public class AdminService {
     }
 
     public boolean addUser(String email, String firstName,
-                        String lastName, Char sex, LocalDate birthDate,
+                        String lastName, char sex, LocalDate birthDate,
                         String password, String role) {
         if (!(role.equals("student") || role.equals("teacher") || role.equals("admin")))
             return false;
@@ -46,6 +49,7 @@ public class AdminService {
         user.setRole(role);
         try {
             userRepository.save(user);
+            return true;
         } catch (DataIntegrityViolationException e) {
             System.out.println("Exception when adding user");
             return false;
@@ -69,6 +73,7 @@ public class AdminService {
         course.setName(name);
         try {
             courseRepository.save(course);
+            return true;
         } catch (DataIntegrityViolationException e) {
             System.out.println("Exception when adding course");
             return false;
@@ -76,7 +81,7 @@ public class AdminService {
     }
 
     public Course getCourse(String code){
-        Optional<Course> course = courseRepository.findByCode(Code);
+        Optional<Course> course = courseRepository.findByCode(code);
         if(course.isPresent()){ 
             return course.get();
         }
@@ -84,8 +89,8 @@ public class AdminService {
     }
 
     public boolean addUserToCourse(Long userId, String courseCode){
-        Optional<User> user=userRepository.findById(id);
-        Optional<Course> course = courseRepository.findByCode(Code);
+        Optional<User> user=userRepository.findById(userId);
+        Optional<Course> course = courseRepository.findByCode(courseCode);
         if(user.isPresent() && course.isPresent()){
             course.get().addUser(user.get());
             return true;
@@ -94,10 +99,10 @@ public class AdminService {
     }
 
     public boolean removeUserFromCourse(Long userId, String courseCode){
-        Optional<User> user=userRepository.findById(id);
-        Optional<Course> course = courseRepository.findByCode(Code);
+        Optional<User> user=userRepository.findById(userId);
+        Optional<Course> course = courseRepository.findByCode(courseCode);
         if(user.isPresent() && course.isPresent()){
-            return course.get().removeUser(user);)
+            return course.get().removeUser(user.get());
         }
         return false;
     }
@@ -112,8 +117,8 @@ public class AdminService {
 
     }
 
-    public boolean deleteCourse(){
-        Optional<Course> course = courseRepository.findByCode(Code);
+    public boolean deleteCourse(String code){
+        Optional<Course> course = courseRepository.findByCode(code);
         if(course.isPresent()){ 
             courseRepository.delete(course.get());
             return true;
