@@ -13,8 +13,8 @@ public class User {
     @Id
     @SequenceGenerator(name = "UserIDSequence",
                         sequenceName = "UserIDSequence", 
-                        allocationSize = 1
-                        //TODO start by 18010000
+                        allocationSize = 1,
+                        initialValue = 18010000
                         )
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "UserIDSequence")
