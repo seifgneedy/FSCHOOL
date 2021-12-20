@@ -1,4 +1,4 @@
-package com.fschool.fschool.Controllers;
+package com.fschool.fschool.Model.Services;
 
 import java.util.Optional;
 

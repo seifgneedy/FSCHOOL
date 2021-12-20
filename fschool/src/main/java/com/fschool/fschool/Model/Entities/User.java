@@ -3,7 +3,10 @@ package com.fschool.fschool.Model.Entities;
 import java.time.LocalDate;
 import java.util.*;
 import javax.persistence.*;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "User")
 @Table(name = "users")
 public class User {
@@ -39,25 +42,6 @@ public class User {
 
     @ManyToMany(mappedBy = "members")
     Set<Course> courses = new HashSet<>();
-
-
-    public User(Long id, String firstName, String lastName, char sex, LocalDate birthDate, String hashedPassword,
-            String role, Set<Course> courses) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.sex = sex;
-        this.birthDate = birthDate;
-        this.hashedPassword = hashedPassword;
-        this.role = role;
-        this.courses = courses;
-    }
-    
-
-
-    public User() {
-    }
-
 
 
     public Long getId() {

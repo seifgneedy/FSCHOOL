@@ -1,9 +1,12 @@
 package com.fschool.fschool.Model.Entities;
 
 import java.util.*;
-
 import javax.persistence.*;
+import lombok.*;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "Course")
 @Table(name = "courses")
 public class Course {
@@ -19,16 +22,6 @@ public class Course {
     inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<User> members = new HashSet<>();
 
-
-
-    public Course(String code, String name, Set<User> members) {
-        this.code = code;
-        this.name = name;
-        this.members = members;
-    }
-
-    public Course() {
-    }
 
     public String getCode() {
         return code;
@@ -65,9 +58,9 @@ public class Course {
         user.getCourses().add(this);
     }
 
-    public void removeUser(User user) {
-        members.remove(user);
+    public boolean removeUser(User user) {
         user.getCourses().remove(this);
+        return members.remove(user);
     }
 
     @Override
