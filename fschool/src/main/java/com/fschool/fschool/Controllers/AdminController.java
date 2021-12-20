@@ -1,5 +1,4 @@
 package com.fschool.fschool.Controllers;
-import java.time.LocalDate;
 import java.util.*;
 
 import com.fschool.fschool.Model.Entities.*;
@@ -33,12 +32,8 @@ public class AdminController {
         return adminService.getTeachers();
     }
     @PostMapping("/admin/add/user")
-    public boolean addUser (@RequestParam String email,
-                        @RequestParam String firstName, @RequestParam String lastName,
-                        @RequestParam char sex, @RequestParam LocalDate birthDate,
-                        @RequestParam String password, @RequestParam String role){
-    
-        return adminService.addUser(email, firstName, lastName, sex, birthDate, password, role);    
+    public boolean addUser (@RequestBody User user){
+        return adminService.addUser(user);    
     }
     @PostMapping("/admin/changePassword")
     public boolean updateUser (@RequestParam Long id, @RequestParam String password){
@@ -53,7 +48,7 @@ public class AdminController {
     public Course getCourse(@RequestParam String code) {
         Course course = adminService.getCourse(code);
         if(course == null){
-            //to do : handle to course found by this ID;
+            //TODO : handle to course found by this ID;
         }
         return course;
     }

@@ -13,13 +13,15 @@ public class User {
     @Id
     @SequenceGenerator(name = "UserIDSequence",
                         sequenceName = "UserIDSequence", 
-                        allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, 
+                        allocationSize = 1
+                        //TODO start by 18010000
+                        )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "UserIDSequence")
     @Column(updatable = false)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)

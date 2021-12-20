@@ -1,6 +1,5 @@
 package com.fschool.fschool.Model.Services;
 
-import java.time.LocalDate;
 import java.util.*;
 import com.fschool.fschool.Model.Repositories.*;
 import com.fschool.fschool.Model.Entities.*;
@@ -34,32 +33,19 @@ public class AdminService {
         return courseRepository.findAll();
     }
 
-    public boolean addUser(String email, String firstName,
-                        String lastName, char sex, LocalDate birthDate,
-                        String password, String role) {
-        if (!(role.equals("student") || role.equals("teacher") || role.equals("admin")))
+    public boolean addUser(User user) {
+        Optional<User> u = userRepository.findByEmail(user.getEmail());
+        if (u.isPresent())
             return false;
-        User user = new User();
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setSex(sex);
-        user.setBirthDate(birthDate);
-        user.setHashedPassword(DigestUtils.sha256Hex(password));
-        user.setRole(role);
-        try {
+        else {
             userRepository.save(user);
             return true;
-        } catch (DataIntegrityViolationException e) {
-            System.out.println("Exception when adding user");
-            return false;
         }
-
     }
 
-    public boolean changePassword(Long id, String password){
-        Optional<User> user=userRepository.findById(id);
-        if(user.isPresent()){
+    public boolean changePassword(Long id, String password) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
             user.get().setHashedPassword(DigestUtils.sha256Hex(password));
             userRepository.save(user.get());
             return true;
@@ -67,49 +53,49 @@ public class AdminService {
         return false;
     }
 
-    public boolean addCourse(String code, String name){
+    public boolean addCourse(String code, String name) {
         Course course = new Course();
         course.setCode(code);
         course.setName(name);
-        try {
+        Optional<Course> c = courseRepository.findByCode(code);
+        if(c.isPresent()){
             courseRepository.save(course);
             return true;
-        } catch (DataIntegrityViolationException e) {
-            System.out.println("Exception when adding course");
-            return false;
         }
+        else
+            return false;
     }
 
-    public Course getCourse(String code){
+    public Course getCourse(String code) {
         Optional<Course> course = courseRepository.findByCode(code);
-        if(course.isPresent()){ 
+        if (course.isPresent()) {
             return course.get();
         }
         return null;
     }
 
-    public boolean addUserToCourse(Long userId, String courseCode){
-        Optional<User> user=userRepository.findById(userId);
+    public boolean addUserToCourse(Long userId, String courseCode) {
+        Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
-        if(user.isPresent() && course.isPresent()){
+        if (user.isPresent() && course.isPresent()) {
             course.get().addUser(user.get());
             return true;
         }
         return false;
     }
 
-    public boolean removeUserFromCourse(Long userId, String courseCode){
-        Optional<User> user=userRepository.findById(userId);
+    public boolean removeUserFromCourse(Long userId, String courseCode) {
+        Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
-        if(user.isPresent() && course.isPresent()){
+        if (user.isPresent() && course.isPresent()) {
             return course.get().removeUser(user.get());
         }
         return false;
     }
 
-    public boolean deleteUser(long id){
-        Optional<User> user=userRepository.findById(id);
-        if(user.isPresent()){ 
+    public boolean deleteUser(long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
             userRepository.delete(user.get());
             return true;
         }
@@ -117,17 +103,13 @@ public class AdminService {
 
     }
 
-    public boolean deleteCourse(String code){
+    public boolean deleteCourse(String code) {
         Optional<Course> course = courseRepository.findByCode(code);
-        if(course.isPresent()){ 
+        if (course.isPresent()) {
             courseRepository.delete(course.get());
             return true;
         }
         return false;
     }
-
-
-
-
 
 }

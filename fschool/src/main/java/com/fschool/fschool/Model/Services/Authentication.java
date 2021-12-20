@@ -27,7 +27,4 @@ public class Authentication {
     private String hashPassword(String password){
         return DigestUtils.sha256Hex(password);
     }
-    public static void main(String[] args) {
-        System.out.println(DigestUtils.sha256Hex("turkish coffee"));
-    }
 }

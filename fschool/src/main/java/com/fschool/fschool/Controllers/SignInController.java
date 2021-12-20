@@ -3,6 +3,7 @@ import javax.servlet.http.*;
 
 import com.fschool.fschool.Model.Services.Authentication;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 @RestController
@@ -11,10 +12,14 @@ public class SignInController {
     @Autowired
     private Authentication authentication;
     @PostMapping("/sign-in")
-    public boolean signIn (@RequestParam String id,
-                        @RequestParam String password,
-                        @RequestParam String role,
+    public boolean signIn (@RequestBody String userCredentials,
                         HttpServletResponse response){
+
+        JSONObject obj = new JSONObject(userCredentials);
+		String id = obj.getString("id");
+		String password = obj.getString("password");
+		String role = obj.getString("role");
+
         if(!authentication.authenticate(Long.valueOf(id), password, role))
             return false;
         Cookie cookie = new Cookie("id",id);
