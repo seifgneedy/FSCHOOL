@@ -21,11 +21,11 @@ public class AdminService {
     }
 
     public List<User> getStudents() {
-        return userRepository.findByRole("Student");
+        return userRepository.findByRole("student");
     }
 
     public List<User> getTeachers() {
-        return userRepository.findByRole("Teacher");
+        return userRepository.findByRole("teacher");
     }
 
     public List<Course> getCourses() {
@@ -34,8 +34,9 @@ public class AdminService {
 
     public boolean addUser(User user) {
         Optional<User> u = userRepository.findByEmail(user.getEmail());
-        if (u.isPresent())
+        if (u.isPresent()){
             return false;
+        }
         else {
             userRepository.save(user);
             return true;
@@ -57,7 +58,7 @@ public class AdminService {
         course.setCode(code);
         course.setName(name);
         Optional<Course> c = courseRepository.findByCode(code);
-        if(c.isPresent()){
+        if(! c.isPresent()){
             courseRepository.save(course);
             return true;
         }
@@ -110,5 +111,6 @@ public class AdminService {
         }
         return false;
     }
+
 
 }

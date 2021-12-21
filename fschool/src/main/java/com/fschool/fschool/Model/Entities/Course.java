@@ -72,7 +72,7 @@ public class Course {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(code);
     }
     
     

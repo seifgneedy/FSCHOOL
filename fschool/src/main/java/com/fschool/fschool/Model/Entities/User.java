@@ -3,6 +3,8 @@ package com.fschool.fschool.Model.Entities;
 import java.time.LocalDate;
 import java.util.*;
 import javax.persistence.*;
+
+
 import lombok.*;
 
 @AllArgsConstructor
@@ -14,7 +16,7 @@ public class User {
     @SequenceGenerator(name = "UserIDSequence",
                         sequenceName = "UserIDSequence", 
                         allocationSize = 1,
-                        initialValue = 18010000
+                        initialValue = 18010001
                         )
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
                         generator = "UserIDSequence")
@@ -44,7 +46,6 @@ public class User {
 
     @ManyToMany(mappedBy = "members")
     Set<Course> courses = new HashSet<>();
-
 
     public Long getId() {
         return id;
@@ -134,7 +135,7 @@ public class User {
  
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(email);
     }
 
 
