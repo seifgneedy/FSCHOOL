@@ -8,7 +8,6 @@
               <v-list-item-avatar>
                 <v-img src="@/assets/admin_avatar.svg"></v-img>
               </v-list-item-avatar>
-            </v-list-item>
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title class="text-h6"> Admin </v-list-item-title>
