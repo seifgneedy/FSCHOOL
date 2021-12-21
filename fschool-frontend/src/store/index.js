@@ -5,21 +5,21 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userId:null
+    user:null
   },
   plugins: [createPersistedState()],
   mutations: {
-    signIn(state,payload){
-      state.userId=payload;
+    setUser(state, payload) {
+      state.user= payload;
     },
-    signOut(state){
-      state.userId=null;
-    }
+    signOut(state) {
+      state.user = null;
+    },
   },
-  getters:{
-    getUser(state){
-      return state.userId;
-    }
+  getters: {
+    getUser(state) {
+      return state.userEmail;
+    },
   },
   actions: {},
   modules: {},
