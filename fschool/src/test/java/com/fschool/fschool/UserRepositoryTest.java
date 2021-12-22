@@ -41,10 +41,8 @@ public class UserRepositoryTest {
         user.setLastName("nagy");
         user.setBirthDate(LocalDate.of(1997, Month.JANUARY, 19));
         user.setSex('m');
-        user.setHashedPassword(DigestUtils.sha256Hex("password"));
-        System.out.println("HERE COMES THE ID WHILE CREATING  = " + user.getId());
+        user.setPassword(DigestUtils.sha256Hex("password"));
         userRepository.save(user);
-        System.out.println("HERE COMES THE ID AFTER SAVING =  " + user.getId());
         Assertions.assertThat(user.getId()).isEqualTo(18010001L);
     }
 
@@ -59,7 +57,7 @@ public class UserRepositoryTest {
         user.setLastName("todd");
         user.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
         user.setSex('f');
-        user.setHashedPassword(DigestUtils.sha256Hex("pass"));
+        user.setPassword(DigestUtils.sha256Hex("pass"));
         userRepository.save(user);
         Assertions.assertThat(userRepository.count()).isEqualTo(2L);
     }
@@ -111,7 +109,7 @@ public class UserRepositoryTest {
         user.setLastName("todd");
         user.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
         user.setSex('f');
-        user.setHashedPassword(DigestUtils.sha256Hex("pass"));
+        user.setPassword(DigestUtils.sha256Hex("pass"));
         userRepository.save(user);
         Assertions.assertThat(userRepository.findByEmail("ab.1@gmail.com").isPresent()).isTrue();
         }

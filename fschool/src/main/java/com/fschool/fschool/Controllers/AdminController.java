@@ -54,12 +54,12 @@ public class AdminController {
     }
 
     @GetMapping(path = "admin/addToCourse")
-    public User addUserToCourse(@RequestParam Long userId, @RequestParam String courseCode) {
-        return adminService.addUserToCourse(userId, courseCode);
+    public String addUserToCourse(@RequestParam Long userId, @RequestParam String courseCode, @RequestParam String role) {
+        return adminService.addUserToCourse(userId, courseCode, role);
     }
 
     @DeleteMapping(path = "admin/removeFromCourse")
-    public User removeUserFromCourse(@RequestParam Long userId, @RequestParam String courseCode) {
+    public boolean removeUserFromCourse(@RequestParam Long userId, @RequestParam String courseCode) {
         return adminService.removeUserFromCourse(userId, courseCode);
     }
 

@@ -19,7 +19,7 @@ public class Authentication {
         String hashedPassword=hashPassword(password);
         Optional<User> user=userRepository.findById(id);
         if(user.isPresent()
-            && user.get().getHashedPassword().equals(hashedPassword)
+            && user.get().getPassword().equals(hashedPassword)
             && user.get().getRole().equals(role))
                 return true;
         return false;

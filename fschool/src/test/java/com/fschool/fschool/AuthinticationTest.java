@@ -44,7 +44,7 @@ public class AuthinticationTest {
         user1.setLastName("nagy");
         user1.setBirthDate(LocalDate.of(1997, Month.JANUARY, 19));
         user1.setSex('m');
-        user1.setHashedPassword(DigestUtils.sha256Hex("password"));
+        user1.setPassword(DigestUtils.sha256Hex("password"));
 
         user2 = new User();
         user2.setEmail("b@gmail.com");
@@ -53,7 +53,7 @@ public class AuthinticationTest {
         user2.setLastName("todd");
         user2.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
         user2.setSex('f');
-        user2.setHashedPassword(DigestUtils.sha256Hex("pass"));
+        user2.setPassword(DigestUtils.sha256Hex("pass"));
 
         userList = new ArrayList<>();
         userList.add(user1);

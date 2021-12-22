@@ -38,6 +38,8 @@ public class AdminService {
             return false;
         }
         else {
+
+            user.setPassword(hashPassword(user.getPassword()));
             userRepository.save(user);
             return true;
         }
@@ -46,7 +48,7 @@ public class AdminService {
     public boolean changePassword(Long id, String password) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            user.get().setHashedPassword(DigestUtils.sha256Hex(password));
+            user.get().setPassword(hashPassword(password));
             userRepository.save(user.get());
             return true;
         }
@@ -74,24 +76,23 @@ public class AdminService {
         return null;
     }
 
-    public User addUserToCourse(Long userId, String courseCode) {
+    public String addUserToCourse(Long userId, String courseCode, String role) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (user.isPresent() && course.isPresent()) {
-            course.get().addUser(user.get());
-            return user.get();
+            if(user.get().getRole().equals(role) && course.get().addUser(user.get()));
+                return user.get().getFirstName() + " " + user.get().getLastName();
         }
         return null;
     }
 
-    public User removeUserFromCourse(Long userId, String courseCode) {
+    public boolean removeUserFromCourse(Long userId, String courseCode) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (user.isPresent() && course.isPresent()) {
-            course.get().removeUser(user.get());
-            return user.get();
+            return course.get().removeUser(user.get());
         }
-        return null;
+        return false;
     }
 
     public boolean deleteUser(long id) {
@@ -111,6 +112,10 @@ public class AdminService {
             return true;
         }
         return false;
+    }
+
+    private String hashPassword(String password){
+        return DigestUtils.sha256Hex(password);
     }
 
 
