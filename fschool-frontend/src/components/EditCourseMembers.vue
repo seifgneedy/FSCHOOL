@@ -2,6 +2,8 @@
   <v-data-table
     :headers="userHeaders"
     :items="members"
+    loading
+    loading-text="Loading... Please wait"
     sort-by="ID"
     class="elevation-1"
   >

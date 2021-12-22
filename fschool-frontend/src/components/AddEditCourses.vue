@@ -2,6 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="courses"
+    loading
+    loading-text="Loading... Please wait"
     sort-by="code"
     class="elevation-1"
   >
