@@ -66,10 +66,10 @@ import {
   minLength,
   maxLength,
   integer,
-  minValue
+  minValue,
+  maxValue
 } from "vuelidate/lib/validators";
 import { AXIOS } from "../http-common.js";
-import router from "../router/index.js";
 
 export default {
   name: "SignIn",
@@ -87,6 +87,7 @@ export default {
     ID: {
       integer,
       minValue:minValue(18010000),
+      maxValue:maxValue(21010000),
       required,
     },
     password: {
@@ -123,11 +124,11 @@ export default {
           Role:this.role
         });
         if(this.role=="System Admin")
-          await router.push("/AdminView");
+          await this.$router.push("/AdminView");
         else if (this.role=="Student")
-          await router.push("/user"); // TODO: next phase
+          await this.$router.push("/user"); // TODO: next phase
         else if (this.role=="Teacher")
-          await router.push("/user");
+          await this.$router.push("/user");
       }else{
         this.alert=true;
         // should show message of wrong ID or password
