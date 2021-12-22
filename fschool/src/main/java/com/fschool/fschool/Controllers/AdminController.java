@@ -31,7 +31,7 @@ public class AdminController {
     public List<User> getTeachers(){
         return adminService.getTeachers();
     }
-    @PostMapping("/admin/user")
+    @PostMapping("/admin/addUser")
     public boolean addUser (@RequestBody User user){
         return adminService.addUser(user);    
     }
@@ -39,7 +39,7 @@ public class AdminController {
     public boolean updateUser (@RequestParam Long id, @RequestParam String password){
         return adminService.changePassword(id, password);    
     }
-    @PostMapping("/admin/course")
+    @PostMapping("/admin/addCourse")
     public boolean addCourse (@RequestParam String code, @RequestParam String name){
         return adminService.addCourse(code, name);
     }
@@ -63,13 +63,14 @@ public class AdminController {
         return adminService.removeUserFromCourse(userId, courseCode);
     }
 
-    @DeleteMapping(path = "admin/user")
+    @DeleteMapping(path = "admin/deleteUser")
     public boolean deleteUser(@RequestParam Long id){
+        System.out.println(id);
         return adminService.deleteUser(id);
     }
 
-    @DeleteMapping(path = "admin/course")
-    public boolean deleteCourse(@RequestParam String code){
+    @DeleteMapping(path = "admin/deleteCourse")
+    public boolean deleteUser(@RequestParam String code){
         return adminService.deleteCourse(code);
     }
 
