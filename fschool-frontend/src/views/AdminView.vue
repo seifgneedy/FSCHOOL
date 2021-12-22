@@ -72,9 +72,6 @@
       <div align="center">
         <div v-show="showAddEditCourse">
           <add-edit-course />
-          <v-btn depressed color="primary" @click="addCourse">
-            Add Course
-          </v-btn>
         </div>
         <div v-show="showAddTeacher">
           <user-table :userRole="'Student'" />
@@ -105,9 +102,6 @@ export default {
     };
   },
   methods: {
-    addCourse() {
-      console.log("add course");
-    },
   },
 };
 </script>
