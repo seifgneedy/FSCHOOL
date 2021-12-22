@@ -72,9 +72,6 @@
       <div align="center">
         <div v-show="showAddEditCourse">
           <add-edit-course />
-          <v-btn depressed color="primary" @click="addCourse">
-            Add Course
-          </v-btn>
         </div>
         <div v-show="showAddTeacher"></div>
         <div v-show="showAddStudent"></div>
@@ -84,7 +81,7 @@
 </template>
 
 <script>
-import AddEditCourse from "@/components/AddEditCourse.vue";
+import AddEditCourse from "@/components/AddEditCourses.vue";
 export default {
   name: "AdminView",
   components: {
@@ -99,9 +96,6 @@ export default {
     };
   },
   methods: {
-    addCourse() {
-      console.log("add course");
-    },
   },
 };
 </script>
