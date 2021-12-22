@@ -131,8 +131,6 @@ export default {
           await this.$router.push("/user");
       }else{
         this.alert=true;
-        // should show message of wrong ID or password
-
       }
     },
     clear() {

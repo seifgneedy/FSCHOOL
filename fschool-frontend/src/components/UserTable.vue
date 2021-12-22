@@ -93,7 +93,7 @@
                               @blur="$v.newUser.sex.$touch()"
                               ></v-select>
                             </v-col>
-                            <v-col>
+                            <v-col cols="12" sm="6" md="4">
                               <v-menu
                                 ref="menu"
                                 v-model="birthMenu"
@@ -113,6 +113,7 @@
                                   ></v-text-field>
                                 </template>
                                 <v-date-picker
+                                  :error-messages="birthDateErrors"
                                   v-model="newUser.birthDate"
                                   :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
                                   min="1950-01-01"
@@ -124,13 +125,44 @@
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
+                  <v-alert 
+                  v-show="userExists"
+                  type="error"
+                  style="font-size:19px;font-weight:bold" 
+                  >User With The Same Email Already Exists</v-alert>
                   <v-spacer />
                   <v-btn
-                  @click="addUser"></v-btn>
+                  @click="close" class="mr-5" dark color="error"
+                  >CLOSE</v-btn>
+                  <v-btn
+                  @click="addUser" class="mr-5" dark color="success"
+                  >SAVE</v-btn>
                 </v-card-actions>
             </v-card>
             </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="600px">
+              <v-card align="center">
+                <v-card-title class="text-h6">
+                  Are you sure you want to delete {{userRole}} with ID: {{newUser.id}}
+                  and Email : {{newUser.email}}
+                </v-card-title>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn color="blue darken-1" dark @click="closeDelete">Cancel</v-btn>
+                  <v-btn color="blue darken-1" dark @click="deleteUserConfirm">OK</v-btn>
+                  <v-spacer />
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             </v-toolbar>
+        </template>
+        <template v-slot:[`item.actions`]=" { item }">
+          <v-icon
+          small
+          @click="deleteUser(item)"
+        >
+        mdi-delete
+      </v-icon>
         </template>
         </v-data-table>
     </div>
@@ -149,6 +181,8 @@ export default {
     data:()=>({
         dialog: false,
         dialogDelete: false,
+        editedUserIndex:-1,
+        userExists:false,
         newUser:{
             id:'',password:'',email:'',firstName:'',lastName:'',sex:'',birthDate:''
         },
@@ -161,7 +195,7 @@ export default {
             firstName:"Seif",
             lastName:"Gneedy",
             sex: "M",
-            birthDate:"22-4-2021"
+            birthDate:"2021-4-2"
         }],
         headers:[
             {text:"ID", value:"id" ,align:"start"},
@@ -208,15 +242,63 @@ export default {
             });
             this.users;
         },
-        async addUser(newUser){
-            newUser.role=this.userRole;
+        async addUser(){
+            this.$v.$touch();
+            if(
+              this.$v.newUser.email.$invalid ||
+              this.$v.newUser.password.$invalid ||
+              this.$v.newUser.firstName.$invalid ||
+              this.$v.newUser.lastName.$invalid ||
+              this.$v.newUser.sex.$invalid ||
+              this.$v.newUser.birthDate.$invalid 
+            )
+              return ;
+            this.newUser.role=this.userRole;
+            this.newUser.sex=this.newUser.sex=="Male"?'M':'F';
+            console.log(this.newUser);
             let response;
-            await AXIOS.post('admin/addUser',newUser).then(res=>{
+            await AXIOS.post('admin/addUser',this.newUser).then(res=>{
                 response=res.data;
             });
             console.log(response);
-            // TODO:check response=> if valid add it to users table
-            // false=> show an error
+            if(response){
+              this.userExists=false;
+              this.users.push(this.newUser);
+              this.close();
+            }else{
+              this.userExists=true;
+            }
+        },
+        close(){
+          this.dialog=false;
+          this.$nextTick(()=>{
+            this.newUser=Object.assign({},this.defaultUser);
+          });
+        },
+        closeDelete(){
+          this.dialogDelete=false;
+          this.$nextTick(()=>{
+            this.newUser=Object.assign({},this.defaultUser);
+          });
+        },
+        deleteUser(user){
+          this.editedUserIndex=this.users.indexOf(user);
+          this.newUser=Object.assign({},user);
+          this.dialogDelete=true;
+        },
+        async deleteUserConfirm(){
+          //TODO: send a delete request to backend to delete the user
+          let response;
+          await AXIOS.delete(`admin/deleteUser?id=${this.newUser.id}`).then(res=>{
+            response=res.data;
+          });
+          if(response){
+            // deleted successfully
+            this.users.splice(this.editedUserIndex);
+          }else{
+            // couldn't delete it
+          }
+          this.closeDelete();
         }
     },
   computed:{
@@ -240,21 +322,27 @@ export default {
     firstNameErrors(){
       const errors=[];
       if(!this.$v.newUser.firstName.$dirty) return errors;
-      !this.$v.newUser.email.firstName && errors.push("Invalid Email");
-      !this.$v.newUser.email.required && errors.push("Email is required.");
+      !this.$v.newUser.firstName.minLength && errors.push("Invalid First Name");
+      !this.$v.newUser.firstName.required && errors.push("First Name is required.");
       return errors;
     },
     lastNameErrors(){
       const errors=[];
       if(!this.$v.newUser.lastName.$dirty) return errors;
-      !this.$v.newUser.email.lastName && errors.push("Invalid Email");
-      !this.$v.newUser.email.required && errors.push("Email is required.");
+      !this.$v.newUser.lastName.minLength && errors.push("Invalid Last Name");
+      !this.$v.newUser.lastName.required && errors.push("Last Name is required.");
       return errors;
     },
     sexErrors() {
       const errors = [];
       if (!this.$v.newUser.sex.$dirty) return errors;
-      !this.$v.newUser.sex.required && errors.push("Role is required");
+      !this.$v.newUser.sex.required && errors.push("Sex is required");
+      return errors;
+    },  
+    birthDateErrors() {
+      const errors = [];
+      if (!this.$v.newUser.birthDate.$dirty) return errors;
+      !this.$v.newUser.birthDate.required && errors.push("Sex is required");
       return errors;
     },
   }
