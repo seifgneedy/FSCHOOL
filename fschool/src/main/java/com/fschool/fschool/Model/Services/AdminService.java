@@ -7,6 +7,7 @@ import com.fschool.fschool.Model.Entities.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 public class AdminService {
@@ -76,21 +77,29 @@ public class AdminService {
         return null;
     }
 
-    public String addUserToCourse(Long userId, String courseCode, String role) {
+    public String addUserToCourse(Long userId, String courseCode, String role) {        
         Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
+
         if (user.isPresent() && course.isPresent()) {
-            if(user.get().getRole().equals(role) && course.get().addUser(user.get()));
-                return user.get().getFirstName() + " " + user.get().getLastName();
-        }
+            if(user.get().getRole().equals(role) && course.get().addUser(user.get())){
+                    courseRepository.saveAndFlush(course.get());
+                    userRepository.saveAndFlush(user.get());
+                    return user.get().getFirstName() + " " + user.get().getLastName();
+                }
+            }
         return null;
+        
     }
 
     public boolean removeUserFromCourse(Long userId, String courseCode) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (user.isPresent() && course.isPresent()) {
-            return course.get().removeUser(user.get());
+            Boolean res = course.get().removeUser(user.get());
+            courseRepository.saveAndFlush(course.get());
+            userRepository.saveAndFlush(user.get());
+            return res;
         }
         return false;
     }
@@ -141,9 +150,7 @@ public class AdminService {
         return null;
     }
 
-    public Set<User> getCourseSet(String code){
-        return courseRepository.findByCode(code).get().getMembers();
-    }
+
 
 
 }
