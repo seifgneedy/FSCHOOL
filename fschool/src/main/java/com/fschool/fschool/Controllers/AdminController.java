@@ -31,7 +31,7 @@ public class AdminController {
     public List<User> getTeachers(){
         return adminService.getTeachers();
     }
-    @PostMapping("/admin/user")
+    @PostMapping("/admin/addUser")
     public Long addUser (@RequestBody User user){
         return adminService.addUser(user);    
     }
