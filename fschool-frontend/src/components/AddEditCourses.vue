@@ -81,7 +81,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="530px">
           <v-card align="center">
-            <v-card-title class="text-h5">Are you sure you want to delete this course?</v-card-title>
+            <v-card-title class="text-h5">Are you sure you want to delete {{editedItem.code}}?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
