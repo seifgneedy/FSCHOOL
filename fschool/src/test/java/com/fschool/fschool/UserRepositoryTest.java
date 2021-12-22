@@ -42,9 +42,9 @@ public class UserRepositoryTest {
         user.setBirthDate(LocalDate.of(1997, Month.JANUARY, 19));
         user.setSex('m');
         user.setHashedPassword(DigestUtils.sha256Hex("password"));
-
+        System.out.println("HERE COMES THE ID WHILE CREATING  = " + user.getId());
         userRepository.save(user);
-
+        System.out.println("HERE COMES THE ID AFTER SAVING =  " + user.getId());
         Assertions.assertThat(user.getId()).isEqualTo(18010001L);
     }
 

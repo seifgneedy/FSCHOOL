@@ -266,7 +266,7 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(course));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isTrue();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isNotNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(1);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(1);
         
@@ -284,7 +284,7 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(course));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isFalse();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
         
@@ -302,7 +302,7 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(null));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isFalse();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
         
@@ -320,12 +320,12 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(course));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isTrue();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isNotNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(1);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(1);
 
 
-        Assertions.assertThat(adminService.removeUserFromCourse(1801001L, course.getCode())).isTrue();
+        Assertions.assertThat(adminService.removeUserFromCourse(1801001L, course.getCode())).isNotNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
     }
@@ -344,7 +344,7 @@ public class AdminServiceTest {
 
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
-        Assertions.assertThat(adminService.removeUserFromCourse(1801001L, course.getCode())).isFalse();
+        Assertions.assertThat(adminService.removeUserFromCourse(1801001L, course.getCode())).isNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
     }

@@ -74,23 +74,24 @@ public class AdminService {
         return null;
     }
 
-    public boolean addUserToCourse(Long userId, String courseCode) {
+    public User addUserToCourse(Long userId, String courseCode) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (user.isPresent() && course.isPresent()) {
             course.get().addUser(user.get());
-            return true;
+            return user.get();
         }
-        return false;
+        return null;
     }
 
-    public boolean removeUserFromCourse(Long userId, String courseCode) {
+    public User removeUserFromCourse(Long userId, String courseCode) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (user.isPresent() && course.isPresent()) {
-            return course.get().removeUser(user.get());
+            course.get().removeUser(user.get());
+            return user.get();
         }
-        return false;
+        return null;
     }
 
     public boolean deleteUser(long id) {
