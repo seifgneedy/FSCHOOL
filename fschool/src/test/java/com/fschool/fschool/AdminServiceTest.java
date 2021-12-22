@@ -180,7 +180,8 @@ public class AdminServiceTest {
         addUsers();
         User user = userList.get(0);
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(null));
-        Assertions.assertThat(adminService.addUser(user)).isTrue();
+        user.setId(1801001L);
+        Assertions.assertThat(adminService.addUser(user)).isNotNull();
         verify(userRepository,times(1)).save(user);
     }
 
@@ -190,7 +191,7 @@ public class AdminServiceTest {
         addUsers();
         User user = userList.get(0);
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
-        Assertions.assertThat(adminService.addUser(user)).isFalse();
+        Assertions.assertThat(adminService.addUser(user)).isNull();
         verify(userRepository,times(0)).save(any());
 
     }

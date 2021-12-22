@@ -32,16 +32,16 @@ public class AdminService {
         return courseRepository.findAll();
     }
 
-    public boolean addUser(User user) {
+    public Long addUser(User user) {
         Optional<User> u = userRepository.findByEmail(user.getEmail());
         if (u.isPresent()){
-            return false;
+            return null;
         }
         else {
 
             user.setPassword(hashPassword(user.getPassword()));
             userRepository.save(user);
-            return true;
+            return user.getId();
         }
     }
 

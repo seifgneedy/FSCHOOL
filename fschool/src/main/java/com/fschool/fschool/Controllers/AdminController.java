@@ -32,7 +32,7 @@ public class AdminController {
         return adminService.getTeachers();
     }
     @PostMapping("/admin/addUser")
-    public boolean addUser (@RequestBody User user){
+    public Long addUser (@RequestBody User user){
         return adminService.addUser(user);    
     }
     @PostMapping("/admin/changePassword")
