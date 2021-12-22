@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main>
       <div style="float: left">
         <v-navigation-drawer permanent>
           <v-list>
@@ -76,19 +76,25 @@
             Add Course
           </v-btn>
         </div>
-        <div v-show="showAddTeacher"></div>
-        <div v-show="showAddStudent"></div>
+        <div v-show="showAddTeacher">
+          <user-table :userRole="'Student'" />
+        </div>
+        <div v-show="showAddStudent">
+          <user-table :userRole="'Teacher'" />
+        </div>
       </div>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
 <script>
 import AddEditCourse from "@/components/AddEditCourse.vue";
+import UserTable from '../components/UserTable.vue';
 export default {
   name: "AdminView",
   components: {
     AddEditCourse,
+    UserTable
   },
   data() {
     return {
