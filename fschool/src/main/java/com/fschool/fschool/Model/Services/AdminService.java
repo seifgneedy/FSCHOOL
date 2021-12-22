@@ -35,7 +35,7 @@ public class AdminService {
     public Long addUser(User user) {
         Optional<User> u = userRepository.findByEmail(user.getEmail());
         if (u.isPresent()){
-            return null;
+            return 0L;
         }
         else {
 
