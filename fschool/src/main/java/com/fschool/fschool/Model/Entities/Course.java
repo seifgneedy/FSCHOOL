@@ -18,8 +18,7 @@ public class Course {
     private String code;
     @Column(nullable = false, unique = true)
     private String name;
-    //TODO:
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "member_of",
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id"))

@@ -134,5 +134,16 @@ public class AdminService {
         return DigestUtils.sha256Hex(password);
     }
 
+    public User getUser(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            return user.get();
+        return null;
+    }
+
+    public Set<User> getCourseSet(String code){
+        return courseRepository.findByCode(code).get().getMembers();
+    }
+
 
 }

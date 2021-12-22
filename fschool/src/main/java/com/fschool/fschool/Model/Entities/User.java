@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.*;
 
@@ -45,8 +45,8 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    @ManyToMany(mappedBy = "members", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "members", cascade = {CascadeType.ALL})
+    @JsonBackReference
     Set<Course> courses = new HashSet<>();
 
     public Long getId() {

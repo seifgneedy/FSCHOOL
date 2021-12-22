@@ -23,6 +23,10 @@ public class AdminController {
     public List<Course> getCourses(){
         return adminService.getCourses();
     }
+    @GetMapping(path="/admin/user")
+    public User getUser(@RequestParam Long id){
+        return adminService.getUser(id);
+    }
     @GetMapping(path = "/admin/students")
     public List<User> getStudents(){
         return adminService.getStudents();
@@ -31,7 +35,8 @@ public class AdminController {
     public List<User> getTeachers(){
         return adminService.getTeachers();
     }
-    @PostMapping("/admin/addUser")
+
+    @PostMapping("/admin/user")
     public Long addUser (@RequestBody User user){
         return adminService.addUser(user);    
     }
@@ -47,13 +52,10 @@ public class AdminController {
     @GetMapping(path = "admin/course/{code}")
     public Course getCourse(@PathVariable String code) {
         Course course = adminService.getCourse(code);
-        if(course == null){
-            //TODO : handle to course found by this ID;
-        }
         return course;
     }
 
-    @GetMapping(path = "admin/addToCourse")
+    @PostMapping(path = "admin/addToCourse")
     public String addUserToCourse(@RequestParam Long userId, @RequestParam String courseCode, @RequestParam String role) {
         return adminService.addUserToCourse(userId, courseCode, role);
     }
@@ -79,9 +81,10 @@ public class AdminController {
         return adminService.getCourseMembers(courseCode, role);
     }
 
-    
-
-
+    @GetMapping(path = "admin/courseSet")
+    public Set<User> getCourseSet(@RequestParam String courseCode){
+        return adminService.getCourseSet(courseCode);
+    }
 
 }
 
