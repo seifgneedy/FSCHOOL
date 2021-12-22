@@ -114,6 +114,22 @@ public class AdminService {
         return false;
     }
 
+
+    //TODO test this method
+    public List<User> getCourseMembers(String courseCode, String role){
+        Optional<Course> course = courseRepository.findByCode(courseCode);
+        List<User> users = new ArrayList<>();
+        if(!course.isPresent())
+            return null;
+
+        for(User user : course.get().getMembers()){
+            if(user.getRole().equals(role))
+                users.add(user);
+        }
+        return users;
+    }
+
+
     private String hashPassword(String password){
         return DigestUtils.sha256Hex(password);
     }

@@ -73,6 +73,11 @@ public class AdminController {
         return adminService.deleteCourse(code);
     }
 
+    @GetMapping(path = "admin/courseMembers")
+    public List<User> getCourseMembers(@RequestParam String courseCode, @RequestParam String role){
+        return adminService.getCourseMembers(courseCode, role);
+    }
+
     
 
 
