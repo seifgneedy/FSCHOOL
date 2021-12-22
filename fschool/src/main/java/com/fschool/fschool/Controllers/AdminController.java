@@ -81,10 +81,5 @@ public class AdminController {
         return adminService.getCourseMembers(courseCode, role);
     }
 
-    @GetMapping(path = "admin/courseSet")
-    public Set<User> getCourseSet(@RequestParam String courseCode){
-        return adminService.getCourseSet(courseCode);
-    }
-
 }
 
