@@ -39,8 +39,8 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @Column(nullable = false)
-    private String hashedPassword;
+    @Column(nullable = false, name = "hashedPassword")
+    private String password;
 
     @Column(nullable = false)
     private String role;
@@ -89,12 +89,12 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getRole() {
@@ -124,7 +124,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [birthDate=" + birthDate + ", firstName=" + firstName + ", hashedPassword=" + hashedPassword
+        return "User [birthDate=" + birthDate + ", firstName=" + firstName + ", password=" + password
                 + ", id=" + id + ", lastName=" + lastName + ", role=" + role + ", sex=" + sex + "]";
     }
 

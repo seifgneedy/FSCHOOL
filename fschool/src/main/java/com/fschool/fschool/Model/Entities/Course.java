@@ -57,9 +57,9 @@ public class Course {
     }
 
 
-    public void addUser(User user) {
+    public boolean addUser(User user) {
         members.add(user);
-        user.getCourses().add(this);
+        return user.getCourses().add(this);
     }
 
     public boolean removeUser(User user) {

@@ -54,7 +54,7 @@ public class AdminServiceTest {
         user1.setLastName("nagy");
         user1.setBirthDate(LocalDate.of(1997, Month.JANUARY, 19));
         user1.setSex('m');
-        user1.setHashedPassword(DigestUtils.sha256Hex("password"));
+        user1.setPassword(DigestUtils.sha256Hex("password"));
 
         user2 = new User();
         user2.setEmail("b@gmail.com");
@@ -63,7 +63,7 @@ public class AdminServiceTest {
         user2.setLastName("todd");
         user2.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
         user2.setSex('f');
-        user2.setHashedPassword(DigestUtils.sha256Hex("pass"));
+        user2.setPassword(DigestUtils.sha256Hex("pass"));
 
         
         user3 = new User();
@@ -73,7 +73,7 @@ public class AdminServiceTest {
         user3.setLastName("smith");
         user3.setBirthDate(LocalDate.of(1987, Month.SEPTEMBER, 11));
         user3.setSex('f');
-        user3.setHashedPassword(DigestUtils.sha256Hex("NOW_pass"));
+        user3.setPassword(DigestUtils.sha256Hex("NOW_pass"));
 
         userList = new ArrayList<>();
         userList.add(user1);
@@ -202,7 +202,7 @@ public class AdminServiceTest {
         User user = userList.get(0);
         when(userRepository.findById(1801001L)).thenReturn(Optional.ofNullable(user));
         Assertions.assertThat(adminService.changePassword(1801001L, "totalyNewPassword")).isTrue();
-        Assertions.assertThat(user.getHashedPassword().equals(DigestUtils.sha256Hex("totalyNewPassword")));
+        Assertions.assertThat(user.getPassword().equals(DigestUtils.sha256Hex("totalyNewPassword")));
         verify(userRepository,times(1)).save(user);
     }
 
@@ -266,7 +266,7 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(course));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isTrue();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode() ,user.getRole())).isNotNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(1);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(1);
         
@@ -284,7 +284,7 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(course));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isFalse();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode(), user.getRole())).isNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
         
@@ -302,7 +302,7 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(null));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isFalse();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode(), user.getRole())).isNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
         
@@ -320,12 +320,12 @@ public class AdminServiceTest {
         Course course = courseList.get(0);
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(course));
 
-        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode())).isTrue();
+        Assertions.assertThat(adminService.addUserToCourse(1801001L, course.getCode(), user.getRole())).isNotNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(1);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(1);
 
 
-        Assertions.assertThat(adminService.removeUserFromCourse(1801001L, course.getCode())).isTrue();
+        Assertions.assertThat(adminService.removeUserFromCourse(1801001L, course.getCode())).isNotNull();
         Assertions.assertThat(user.getCourses().size()).isEqualTo(0);
         Assertions.assertThat(course.getMembers().size()).isEqualTo(0);
     }
