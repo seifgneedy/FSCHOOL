@@ -18,7 +18,9 @@
         <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
-          max-width="500px"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -32,10 +34,30 @@
             </v-btn>
           </template>
           <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
+            <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              v-show="isAddingNewCourse"
+              dark
+              text
+              @click="close"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              dark
+              text
+              @click="save"
+            >
+              Save
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
             <v-card-text>
               <v-container>
                 <v-row v-if="isAddingNewCourse">
@@ -50,33 +72,27 @@
                       label="Course name"
                     ></v-text-field>
                 </v-row>
-                <v-row>
-                    <v-textarea
-                        v-model="editedItem.newMembers"
-                        label="New Members"
-                        hint="Please enter comma separated IDs"
-                        ></v-textarea>
+                <v-row v-show="!isAddingNewCourse">
+                    <!--////////////////////
+                    ///////////
+                    /////////////////
+                    / Start of Members table inside edit course
+                    //////////////////
+                    /
+                    /////-->
+                    <edit-course-members :userRole="'teacher'" :courseCode="editedItem.code"></edit-course-members>
+                    <v-spacer></v-spacer>
+                    <edit-course-members :userRole="'student'" :courseCode="editedItem.code"></edit-course-members>
+                <!--////////////////////
+                    ///////////
+                    /////////////////
+                    / End of Members table inside edit course
+                    //////////////////
+                    /
+                    /////-->
                 </v-row>
               </v-container>
             </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="530px">
@@ -107,21 +123,19 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
-    </template>
   </v-data-table>
 </template>
 <script>
+import EditCourseMembers from "./EditCourseMembers.vue";
   export default {
+    components: {
+    EditCourseMembers
+  },
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      addMemberDialog: false,
+      dialogDeleteMember: false,
       headers:[
         {
           text: "Code",
@@ -131,6 +145,22 @@
         {
           text: "Name",
           value: "name",
+        },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      userHeaders:[
+        {
+          text: "ID",
+          align: "start",
+          value: "id",
+        },
+        {
+          text: "Name",
+          value: "name",
+        },
+        {
+          text: "Role",
+          value: "role",
         },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
@@ -161,15 +191,18 @@
         },
       ],
       editedIndex: -1,
+      deletedMemberIndex: -1,
       isAddingNewCourse: true,
+      addedUserId: '',
       editedItem: {
         code: '',
         name: '',
-        newMembers:'',
+        members:[],
       },
       defaultItem: {
         code: '',
         name: '',
+        members:[],
       },
     }),
 
@@ -199,7 +232,14 @@
 
       editItem (item) {
         this.editedIndex = this.courses.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.editedItem.code = item.code;
+        this.editedItem.name = item.name;
+        //Loading members here
+        /////////
+        this.editedItem.members = [];
+        // this.editedItem.members.push()
+        /////////
+        //////
         this.isAddingNewCourse = false
         this.dialog = true
       },
@@ -209,12 +249,20 @@
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
+      deleteMember (item) {
+        this.deletedMemberIndex = this.editedItem.members.indexOf(item)
+        this.addedUserId = item.id;
+        this.dialogDeleteMember = true
+      },
 
       deleteItemConfirm () {
         this.courses.splice(this.editedIndex, 1)
         this.closeDelete()
       },
-
+      deleteMemberConfirm(){
+        this.editedItem.members.splice(this.deletedMemberIndex, 1);
+        this.closeDeleteMember();
+      },
       close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -222,6 +270,10 @@
           this.editedIndex = -1
           this.isAddingNewCourse = true
         })
+      },
+      closeAddMemberDialog(){
+        this.addMemberDialog = false;
+        this.addedUserId = '';
       },
 
       closeDelete () {
@@ -231,14 +283,25 @@
           this.editedIndex = -1
         })
       },
-
+      closeDeleteMember(){
+        this.dialogDeleteMember = false;
+        this.addedUserId = '';
+      },
       save () {
-        if (this.editedIndex > -1) {
+        if (this.editedIndex > -1) {//Editing
           Object.assign(this.courses[this.editedIndex], this.editedItem)
-        } else {
+        } else {// Adding new one
           this.courses.push(this.editedItem)
         }
         this.close()
+      },
+      saveAddedMember(){
+        // Send id
+        // this.addedUserId
+        // get user data 
+        // if success add it to the table
+        this.editedItem.members.push({id:'1512',name:'111', role:'Student'});
+        this.closeAddMemberDialog();
       },
     },
   }
