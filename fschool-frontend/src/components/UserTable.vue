@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- <p>{{getUsers()}}</p> -->
         <v-data-table
         style="margin:25px"
         :headers="headers"
@@ -261,8 +260,9 @@ export default {
                 response=res.data;
             });
             console.log(response);
-            if(response){
+            if(response!=0){
               this.userExists=false;
+              this.newUser.id=response;
               this.users.push(this.newUser);
               this.close();
             }else{
