@@ -69,7 +69,7 @@ public class AdminController {
     }
 
     @DeleteMapping(path = "admin/deleteCourse")
-    public boolean deleteUser(@RequestParam String code){
+    public boolean deleteCourse(@RequestParam String code){
         return adminService.deleteCourse(code);
     }
 

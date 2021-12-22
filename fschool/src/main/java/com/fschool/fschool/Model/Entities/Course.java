@@ -2,6 +2,9 @@ package com.fschool.fschool.Model.Entities;
 
 import java.util.*;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.*;
 
 
@@ -16,10 +19,11 @@ public class Course {
     @Column(nullable = false, unique = true)
     private String name;
     //TODO:
-    @ManyToMany(cascade = {})       
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "member_of",
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id"))
+    @JsonBackReference
     private Set<User> members = new HashSet<>();
 
 

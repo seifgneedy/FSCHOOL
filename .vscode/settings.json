@@ -1,3 +1,18 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "remotemysql.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "FSchool",
+            "database": "MT3v7MEDaY",
+            "username": "MT3v7MEDaY",
+            "password": "1r9BLGzqHg"
+        }
+    ]
 }
