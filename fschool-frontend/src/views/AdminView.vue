@@ -31,7 +31,7 @@
                 </v-list-item-avatar>
               </v-list-item-icon>
               <v-list-item-title>
-                Add / Edit Course
+                Courses
               </v-list-item-title>
             </v-list-item>
             <v-list-item 
@@ -47,7 +47,7 @@
                 </v-list-item-avatar>
               </v-list-item-icon>
               <v-list-item-title>
-                Add Teacher
+                Teachers
               </v-list-item-title>
             </v-list-item >
             <v-list-item 
@@ -63,7 +63,7 @@
                 </v-list-item-avatar>
               </v-list-item-icon>
               <v-list-item-title>
-                Add Student
+                Students
               </v-list-item-title>
             </v-list-item>
           </v-list>
