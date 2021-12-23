@@ -43,7 +43,7 @@ public class UserRepositoryTest {
         user.setSex("m");
         user.setPassword(DigestUtils.sha256Hex("password"));
         userRepository.save(user);
-        Assertions.assertThat(user.getId()).isEqualTo(18010001L);
+        Assertions.assertThat(user.getId()).isGreaterThan(18010000L);
     }
 
     @Test

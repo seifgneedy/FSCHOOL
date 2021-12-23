@@ -129,7 +129,6 @@ public class AdminService {
     }
 
 
-    //TODO test this method
     public List<User> getCourseMembers(String courseCode, String role){
         Optional<Course> course = courseRepository.findByCode(courseCode);
         List<User> users = new ArrayList<>();
@@ -144,7 +143,6 @@ public class AdminService {
     }
 
     
-    //TODO test this method
     public boolean updateCourseName(String courseCode, String courseName){
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (course.isPresent()) {
