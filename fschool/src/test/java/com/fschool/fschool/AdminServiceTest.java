@@ -191,7 +191,7 @@ public class AdminServiceTest {
         addUsers();
         User user = userList.get(0);
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
-        Assertions.assertThat(adminService.addUser(user)).isNull();
+        Assertions.assertThat(adminService.addUser(user)).isEqualTo(0L)
         verify(userRepository,times(0)).save(any());
 
     }

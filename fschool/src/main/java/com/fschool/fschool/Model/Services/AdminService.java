@@ -106,17 +106,23 @@ public class AdminService {
     public boolean deleteUser(long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
+            for(Course course: user.get().getCourses()){
+                course.removeUser(user.get());
+            }
             userRepository.delete(user.get());
+            userRepository.flush();
+            courseRepository.flush();
             return true;
         }
         return false;
-
     }
 
     public boolean deleteCourse(String code) {
         Optional<Course> course = courseRepository.findByCode(code);
         if (course.isPresent()) {
             courseRepository.delete(course.get());
+            courseRepository.flush();
+            userRepository.flush();
             return true;
         }
         return false;
