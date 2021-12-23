@@ -34,7 +34,7 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
-    private char sex;
+    private String sex;
 
     @Column(nullable = false)
     private LocalDate birthDate;
@@ -73,11 +73,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public char getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(char sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

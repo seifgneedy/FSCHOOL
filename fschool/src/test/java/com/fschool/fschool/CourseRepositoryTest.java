@@ -42,7 +42,7 @@ public class CourseRepositoryTest {
         user1.setFirstName("ahmed");
         user1.setLastName("nagy");
         user1.setBirthDate(LocalDate.of(1997, Month.JANUARY, 19));
-        user1.setSex('m');
+        user1.setSex("m");
         user1.setPassword(DigestUtils.sha256Hex("password"));
 
         user2 = new User();
@@ -51,7 +51,7 @@ public class CourseRepositoryTest {
         user2.setFirstName("chloe");
         user2.setLastName("todd");
         user2.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
-        user2.setSex('f');
+        user2.setSex("f");
         user2.setPassword(DigestUtils.sha256Hex("pass"));
 
         
@@ -61,7 +61,7 @@ public class CourseRepositoryTest {
         user3.setFirstName("kate");
         user3.setLastName("smith");
         user3.setBirthDate(LocalDate.of(1987, Month.SEPTEMBER, 11));
-        user3.setSex('f');
+        user3.setSex("f");
         user3.setPassword(DigestUtils.sha256Hex("NOW_pass"));
 
         userList = new ArrayList<>();
