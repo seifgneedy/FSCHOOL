@@ -238,9 +238,9 @@ export default {
         }
     },
     created(){
-      loading=true;
+      this.loading=true;
       this.getUsers();
-      loading=false;
+      this.loading=false;
     },
     methods:{
         async getUsers(){
@@ -260,7 +260,6 @@ export default {
             )
               return ;
             this.newUser.role=this.userRole;
-            this.newUser.sex=this.newUser.sex=="Male"?'M':'F';
             console.log(this.newUser);
             let response;
             await AXIOS.post('admin/user',this.newUser).then(res=>{
@@ -301,7 +300,7 @@ export default {
           });
           if(response){
             // deleted successfully
-            this.users.splice(this.editedUserIndex);
+            this.users.splice(this.editedUserIndex,1);
           }else{
             // couldn't delete it
           }
