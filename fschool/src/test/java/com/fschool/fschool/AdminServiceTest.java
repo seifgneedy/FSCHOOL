@@ -191,7 +191,7 @@ public class AdminServiceTest {
         addUsers();
         User user = userList.get(0);
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
-        Assertions.assertThat(adminService.addUser(user)).isNull();
+        Assertions.assertThat(adminService.addUser(user)).isEqualTo(0L);
         verify(userRepository,times(0)).save(any());
 
     }
@@ -386,6 +386,57 @@ public class AdminServiceTest {
         when(courseRepository.findByCode(course.getCode())).thenReturn(Optional.ofNullable(null));
         Assertions.assertThat(adminService.deleteCourse(course.getCode())).isFalse();
         verify(courseRepository,times(0)).delete(any());
+    }
+
+    @Test
+    @Order(24)
+    public void getCourseMembersTest(){
+        addUsers();
+        addCourses();
+        when(userRepository.findById(1801001L)).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findById(1801002L)).thenReturn(Optional.ofNullable(user2));
+        when(userRepository.findById(1801003L)).thenReturn(Optional.ofNullable(user3));
+
+        when(courseRepository.findByCode(course1.getCode())).thenReturn(Optional.ofNullable(course1));
+        when(courseRepository.findByCode(course2.getCode())).thenReturn(Optional.ofNullable(course2));
+
+        adminService.addUserToCourse(1801001L, course1.getCode(), user1.getRole());
+        adminService.addUserToCourse(1801002L, course1.getCode(), user2.getRole());
+
+        adminService.addUserToCourse(1801002L, course2.getCode(), user2.getRole());
+        adminService.addUserToCourse(1801003L, course2.getCode(), user3.getRole());
+
+        Assertions.assertThat(course1.getMembers().size()).isEqualTo(2);
+        Assertions.assertThat(course2.getMembers().size()).isEqualTo(2);
+        Assertions.assertThat(user1.getCourses().size()).isEqualTo(1);
+        Assertions.assertThat(user2.getCourses().size()).isEqualTo(2);
+        Assertions.assertThat(user3.getCourses().size()).isEqualTo(1);
+
+        Assertions.assertThat(adminService.getCourseMembers(course1.getCode(), "student")).containsExactlyInAnyOrder(user1, user2);
+        Assertions.assertThat(adminService.getCourseMembers(course1.getCode(), "teacher")).isEqualTo(Arrays.asList());
+        Assertions.assertThat(adminService.getCourseMembers(course2.getCode(), "student")).isEqualTo(Arrays.asList(user2));
+        Assertions.assertThat(adminService.getCourseMembers(course2.getCode(), "teacher")).isEqualTo(Arrays.asList(user3));
+    }
+
+    @Test
+    @Order(25)
+    public void updateCourseNameTest(){
+        addCourses();
+        Assertions.assertThat(course1.getName()).isEqualTo("Computer Vision");
+        when(courseRepository.findByCode(course1.getCode())).thenReturn(Optional.ofNullable(course1));
+        Assertions.assertThat(adminService.updateCourseName(course1.getCode(), "NewName")).isTrue();
+        Assertions.assertThat(course1.getName()).isEqualTo("NewName");
+
+
+
+    }
+
+    @Test
+    @Order(26)
+    public void updateNonExistingCourseNameTest(){
+        addCourses();
+        when(courseRepository.findByCode("NON EXISTING CODE")).thenReturn(Optional.ofNullable(null));
+        Assertions.assertThat(adminService.updateCourseName("NON EXISTING CODE", "NewName")).isFalse();
     }
     
 }

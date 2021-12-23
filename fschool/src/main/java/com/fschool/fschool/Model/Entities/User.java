@@ -45,7 +45,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    @ManyToMany(mappedBy = "members", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "members", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonBackReference
     Set<Course> courses = new HashSet<>();
 
@@ -131,8 +131,9 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        return id != null && id.equals(((User) o).getId());
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return email.equals(user.getEmail());
     }
  
     @Override

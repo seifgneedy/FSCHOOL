@@ -21,6 +21,19 @@
                 vertical
                 ></v-divider>
             <v-spacer ></v-spacer>
+            <v-alert type="success"
+                style="font-size:19px;font-weight:bold"
+                v-show="deleteSuccess"
+                >Deleted {{userRole}} successfully</v-alert>
+            <v-alert type="success"
+                style="font-size:19px;font-weight:bold"
+                v-show="insertSuccess"
+                >Inserted {{userRole}} successfully</v-alert>
+            <v-alert type="error"
+                style="font-size:19px;font-weight:bold"
+                v-show="deleteFailed"
+            >Couldn't delete user</v-alert>
+            <v-spacer ></v-spacer>
             <v-dialog
             persistent
             v-model="dialog" 
@@ -127,10 +140,10 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-alert 
-                  v-show="userExists"
+                  v-show="addUserError"
                   type="error"
                   style="font-size:19px;font-weight:bold" 
-                  >User With The Same Email Already Exists</v-alert>
+                  >Error inserting user:{{userError}}</v-alert>
                   <v-spacer />
                   <v-btn
                   @click="close" class="mr-5" dark color="error"
@@ -184,21 +197,18 @@ export default {
         loading:false,
         dialogDelete: false,
         editedUserIndex:-1,
-        userExists:false,
+        deleteSuccess:false,
+        deleteFailed:false,
+        insertSuccess:false,
+        addUserError:false,
+        userError:'',
         newUser:{
             id:'',password:'',email:'',firstName:'',lastName:'',sex:'',birthDate:''
         },
         defaultUser:{
             id:'',password:'',email:'',firstName:'',lastName:'',sex:'',birthDate:''
         },
-        users:[{
-            id:"18010834",
-            email:"seifgneedy@gmail.com",
-            firstName:"Seif",
-            lastName:"Gneedy",
-            sex: "M",
-            birthDate:"2021-4-2"
-        }],
+        users:[],
         headers:[
             {text:"ID", value:"id" ,align:"start"},
             {text:"Email",value:"email"},
@@ -249,6 +259,7 @@ export default {
             });
         },
         async addUser(){
+            this.addUserError=false;
             this.$v.$touch();
             if(
               this.$v.newUser.email.$invalid ||
@@ -260,24 +271,35 @@ export default {
             )
               return ;
             this.newUser.role=this.userRole;
-            console.log(this.newUser);
-            let response;
+            let response,networkError=false;
             await AXIOS.post('admin/user',this.newUser).then(res=>{
                 response=res.data;
+            }).catch(()=>{
+              networkError=true;
+              response=0;
             });
-            console.log(response);
             if(response!=0){
-              this.userExists=false;
+              this.addUserError=false;
               this.newUser.id=response;
               this.users.push(this.newUser);
+              this.insertSuccess=true;
+              setTimeout(()=>{
+                this.insertSuccess=false;
+              },5000);
               this.close();
             }else{
-              this.userExists=true;
+              this.addUserError=true;
+              if(networkError){
+                this.userError='Network Error,Try Again';
+              }else{
+                this.userError='User already exists';
+              }
             }
         },
         close(){
           this.$v.$reset();
           this.dialog=false;
+          this.addUserError=false;
           this.$nextTick(()=>{
             this.newUser=Object.assign({},this.defaultUser);
           });
@@ -297,12 +319,20 @@ export default {
           let response;
           await AXIOS.delete(`admin/user?id=${this.newUser.id}`).then(res=>{
             response=res.data;
+          }).catch(()=>{
+            response=false;
           });
           if(response){
-            // deleted successfully
             this.users.splice(this.editedUserIndex,1);
+            this.deleteSuccess=true;
+            setTimeout(()=>{
+              this.deleteSuccess=false;
+            },4000);
           }else{
-            // couldn't delete it
+            this.deleteFailed=true;
+            setTimeout(()=>{
+              this.deleteFailed=false;
+            },4000);
           }
           this.closeDelete();
         }
