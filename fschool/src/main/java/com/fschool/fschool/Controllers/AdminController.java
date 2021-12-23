@@ -81,5 +81,10 @@ public class AdminController {
         return adminService.getCourseMembers(courseCode, role);
     }
 
+    @PutMapping(path = "admin/updateCourseName")
+    public boolean updateCourseName (@RequestParam String courseCode, @RequestParam String courseName){
+        return adminService.updateCourseName(courseCode, courseName);
+    }
+
 }
 
