@@ -2,7 +2,8 @@
   <v-data-table
     :headers="headers"
     :items="courses"
-    loading
+    item-key="code"
+    :loading="currentlyLoading"
     loading-text="Loading... Please wait"
     sort-by="code"
     class="elevation-1"
@@ -12,6 +13,19 @@
         <v-toolbar-title>Courses</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
+        <v-dialog v-model="networkError" max-width="340px">
+          <v-card>
+          <v-alert type="error">
+            Network Error. Please try again later.
+          </v-alert>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" align="center" text @click="networkError = false"
+            >OK</v-btn
+          >
+          </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-dialog
           v-model="dialog"
           fullscreen
@@ -40,7 +54,6 @@
                   <v-alert v-show="invalidCourseCode" type="error">
                     Invalid course code
                   </v-alert>
-                  <v-spacer v-show="invalidCourseCode"></v-spacer>
                   <v-text-field
                     v-model="editedItem.code"
                     label="Course code"
@@ -51,16 +64,10 @@
                   <v-text-field
                     v-model="editedItem.name"
                     label="Course name"
+                    required
                   ></v-text-field>
                 </v-row>
                 <v-row v-if="!isAddingNewCourse">
-                  <!--////////////////////
-                    ///////////
-                    /////////////////
-                    / Start of Members table inside edit course
-                    //////////////////
-                    /
-                    /////-->
                   <edit-course-members
                     :userRole="'teacher'"
                     :courseCode="editedItem.code"
@@ -70,13 +77,6 @@
                     :userRole="'student'"
                     :courseCode="editedItem.code"
                   ></edit-course-members>
-                  <!--////////////////////
-                    ///////////
-                    /////////////////
-                    / End of Members table inside edit course
-                    //////////////////
-                    /
-                    /////-->
                 </v-row>
               </v-container>
             </v-card-text>
@@ -121,6 +121,9 @@ export default {
     addMemberDialog: false,
     dialogDeleteMember: false,
     invalidCourseCode: false,
+    currentlyLoading: true,
+    networkError: false,
+    courseOldName:'',
     headers: [
       {
         text: "Code",
@@ -133,27 +136,9 @@ export default {
       },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    userHeaders: [
-      {
-        text: "ID",
-        align: "start",
-        value: "id",
-      },
-      {
-        text: "Name",
-        value: "name",
-      },
-      {
-        text: "Role",
-        value: "role",
-      },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
     courses: [],
     editedIndex: -1,
-    deletedMemberIndex: -1,
     isAddingNewCourse: true,
-    addedUserId: "",
     editedItem: {
       code: "",
       name: "",
@@ -190,7 +175,8 @@ export default {
       // Getting current courses
       await AXIOS.get("admin/courses", {}).then((res) => {
         this.courses = res.data;
-      });
+      }).catch(() => {this.networkError = true});
+      this.currentlyLoading = false;
     },
 
     editItem(item) {
@@ -212,7 +198,7 @@ export default {
         (res) => {
           response = res.data;
         }
-      );
+      ).catch(() => {this.networkError = true});
       if (response) this.courses.splice(this.editedIndex, 1);
       this.closeDelete();
     },
@@ -235,11 +221,13 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         //Editing
-        ///////////////
-        ////////////
-        //////////////////
-        //////////////
-        Object.assign(this.courses[this.editedIndex], this.editedItem);
+        if(this.courses[this.editedIndex].name !== this.editedItem.name){
+          await AXIOS.put(
+            `admin/updateCourseName?courseCode=${this.editedItem.code}&courseName=${this.editedItem.name}`,
+            {}
+          ).catch(() => {this.networkError = true});
+          Object.assign(this.courses[this.editedIndex], this.editedItem);
+        }
       } else {
         // Adding new one
         let response;
@@ -248,7 +236,7 @@ export default {
           {}
         ).then((res) => {
           response = res.data;
-        });
+        }).catch(() => {this.networkError = true});
         if (response) this.courses.push(this.editedItem);
         else {
           this.invalidCourseCode = true;
