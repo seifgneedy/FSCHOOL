@@ -4,6 +4,8 @@
         style="margin:25px"
         :headers="headers"
         :items="users"
+        :loading="loading"
+        loading-text="Loading... Please wait"
         sort-by="id"
         class="elevation-1"
         >
@@ -179,6 +181,7 @@ export default {
     props:['userRole'],
     data:()=>({
         dialog: false,
+        loading:false,
         dialogDelete: false,
         editedUserIndex:-1,
         userExists:false,
@@ -234,12 +237,16 @@ export default {
           },
         }
     },
+    created(){
+      loading=true;
+      this.getUsers();
+      loading=false;
+    },
     methods:{
         async getUsers(){
             await AXIOS.get(`admin/${this.userRole}s`).then(res=>{
                 this.users=res.data;
             });
-            this.users;
         },
         async addUser(){
             this.$v.$touch();
@@ -256,7 +263,7 @@ export default {
             this.newUser.sex=this.newUser.sex=="Male"?'M':'F';
             console.log(this.newUser);
             let response;
-            await AXIOS.post('admin/addUser',this.newUser).then(res=>{
+            await AXIOS.post('admin/user',this.newUser).then(res=>{
                 response=res.data;
             });
             console.log(response);
@@ -270,6 +277,7 @@ export default {
             }
         },
         close(){
+          this.$v.$reset();
           this.dialog=false;
           this.$nextTick(()=>{
             this.newUser=Object.assign({},this.defaultUser);
@@ -287,9 +295,8 @@ export default {
           this.dialogDelete=true;
         },
         async deleteUserConfirm(){
-          //TODO: send a delete request to backend to delete the user
           let response;
-          await AXIOS.delete(`admin/deleteUser?id=${this.newUser.id}`).then(res=>{
+          await AXIOS.delete(`admin/user?id=${this.newUser.id}`).then(res=>{
             response=res.data;
           });
           if(response){
