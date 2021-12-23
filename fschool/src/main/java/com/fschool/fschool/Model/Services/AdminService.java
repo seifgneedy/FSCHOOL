@@ -137,9 +137,16 @@ public class AdminService {
         return users;
     }
 
-
-    private String hashPassword(String password){
-        return DigestUtils.sha256Hex(password);
+    
+    //TODO test this method
+    public boolean updateCourseName(String courseCode, String courseName){
+        Optional<Course> course = courseRepository.findByCode(courseCode);
+        if (course.isPresent()) {
+            course.get().setName(courseName);
+            courseRepository.save(course.get());
+            return true;
+        }
+        return false;
     }
 
     public User getUser(Long id){
@@ -148,6 +155,12 @@ public class AdminService {
             return user.get();
         return null;
     }
+
+    private String hashPassword(String password){
+        return DigestUtils.sha256Hex(password);
+    }
+
+
 
 
 
