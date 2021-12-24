@@ -110,10 +110,9 @@ export default {
       this.$router.push("/");
     }
   },
-// TODO: Uncomment this after finishing implementation of tables
-/*  created(){
+created(){
     if(this.user==null)
       this.signOut();
-  } */
+  }
 };
 </script>
