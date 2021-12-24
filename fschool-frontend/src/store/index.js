@@ -18,7 +18,7 @@ export default new Vuex.Store({
   },
   getters: {
     getUser(state) {
-      return state.userEmail;
+      return state.user;
     },
   },
   actions: {},

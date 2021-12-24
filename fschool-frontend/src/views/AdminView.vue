@@ -99,20 +99,21 @@ export default {
       showAddEditCourse: true,
       showAddTeacher: false,
       showAddStudent: false,
+
       usersInCourse: [],
     };
   },
   methods:{
-
-
     signOut(){
       this.$store.commit("signOut");
       this.$router.push("/");
     }
   },
 created(){
+    this.user=this.$store.getters.getUser;
     if(this.user==null)
       this.signOut();
   }
+
 };
 </script>
