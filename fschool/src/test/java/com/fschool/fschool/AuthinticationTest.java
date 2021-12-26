@@ -71,41 +71,37 @@ public class AuthinticationTest {
     @Order(1)
     @Rollback(value = false)
     public void signInTest(){
-        when(userRepository.findById(18010001L)).thenReturn(Optional.ofNullable(user1));
-        boolean singedIn = authentication.authenticate(18010001L, "password", "student");
-        Assertions.assertThat(singedIn).isTrue();
+        when(userRepository.findByEmail("a@gmail.com")).thenReturn(Optional.ofNullable(user1));
+        Optional<User> user = authentication.authenticate("a@gmail.com", "password");
+        Assertions.assertThat(user.isPresent()).isTrue();
+        Assertions.assertThat(user.get()).isEqualTo(user1);
     }
 
     @Test
     @Order(2)
     public void signInTest2(){
-        when(userRepository.findById(18010002L)).thenReturn(Optional.ofNullable(user2));
-        boolean singedIn = authentication.authenticate(18010002L, "pass", "student");
-        Assertions.assertThat(singedIn).isTrue();
+        when(userRepository.findByEmail("b@gmail.com")).thenReturn(Optional.ofNullable(user2));
+        Optional<User> user = authentication.authenticate("b@gmail.com", "pass");
+        Assertions.assertThat(user.isPresent()).isTrue();
+        Assertions.assertThat(user.get()).isEqualTo(user2);
     }
 
     @Test
     @Order(3)
     public void wrongPasswordTest(){
-        when(userRepository.findById(18010001L)).thenReturn(Optional.ofNullable(user1));
-        boolean singedIn = authentication.authenticate(18010001L, "pass", "student");
-        Assertions.assertThat(singedIn).isFalse();
+        when(userRepository.findByEmail("a@gmail.com")).thenReturn(Optional.ofNullable(user1));
+        Optional<User> user = authentication.authenticate("a@gmail.com", "pass");
+        Assertions.assertThat(user.isPresent()).isFalse();
     }
+
+
 
     @Test
     @Order(4)
-    public void wrongRoleTest(){
-        when(userRepository.findById(18010001L)).thenReturn(Optional.ofNullable(user1));
-        boolean singedIn = authentication.authenticate(18010001L, "password", "teacher");
-        Assertions.assertThat(singedIn).isFalse();
-    }
-
-    @Test
-    @Order(5)
-    public void wrongIdTest(){
-        when(userRepository.findById(0L)).thenReturn(Optional.ofNullable(null));
-        boolean singedIn = authentication.authenticate(0L, "password", "teacher");
-        Assertions.assertThat(singedIn).isFalse();
+    public void wrongEmailTest(){
+        when(userRepository.findByEmail("Abcd@gmail.com")).thenReturn(Optional.ofNullable(null));
+        Optional<User> user = authentication.authenticate("Abcd@gmail.com", "password");
+        Assertions.assertThat(user.isPresent()).isFalse();
     }
     
 

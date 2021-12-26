@@ -1,6 +1,9 @@
 package com.fschool.fschool.Controllers;
+import java.util.Optional;
+
 import javax.servlet.http.*;
 
+import com.fschool.fschool.Model.Entities.User;
 import com.fschool.fschool.Model.Services.Authentication;
 
 import org.json.JSONObject;
@@ -13,23 +16,21 @@ public class SignInController {
     @Autowired
     private Authentication authentication;
     @PostMapping("/sign-in")
-    public boolean signIn (@RequestBody String userCredentials,
+    public String signIn (@RequestBody String userCredentials,
                         HttpServletResponse response){
         System.out.println(userCredentials);
         JSONObject obj = new JSONObject(userCredentials);
-		String id = obj.getString("ID");
+		String email = obj.getString("Email");
 		String password = obj.getString("Password");
-		String role = obj.getString("Role");
-
-        if(!authentication.authenticate(Long.valueOf(id), password, role)){
+        Optional<User> user = authentication.authenticate(email, password);
+        if( !user.isPresent()){
             System.out.println("Not exists");
-            return false;
+            return "Incorrect Credentials";
         }
-        Cookie cookie = new Cookie("id",id);
+        Cookie cookie = new Cookie("id",Long.toString(user.get().getId()));
         cookie.setMaxAge(EIGHT_DAYS);
         cookie.setSecure(true);
-        System.out.println("entered id " + id);
         response.addCookie(cookie);
-        return true;
+        return user.get().getRole();
     }
 }

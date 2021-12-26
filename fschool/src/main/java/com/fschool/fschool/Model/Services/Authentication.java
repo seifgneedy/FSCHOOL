@@ -15,14 +15,14 @@ public class Authentication {
     Authentication(UserRepository userRepository){
         this.userRepository=userRepository;
     }
-    public boolean authenticate(Long id,String password,String role){
+    public Optional<User> authenticate(String email,String password){
         String hashedPassword=hashPassword(password);
-        Optional<User> user=userRepository.findById(id);
+        Optional<User> user=userRepository.findByEmail(email);
         if(user.isPresent()
             && user.get().getPassword().equals(hashedPassword)
-            && user.get().getRole().equals(role))
-                return true;
-        return false;
+            )
+                return user;
+        return Optional.empty();
     }
     private String hashPassword(String password){
         return DigestUtils.sha256Hex(password);
