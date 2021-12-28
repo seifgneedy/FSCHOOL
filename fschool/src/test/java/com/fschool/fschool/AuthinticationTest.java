@@ -7,7 +7,7 @@ import java.util.*;
 
 import com.fschool.fschool.Model.Entities.User;
 import com.fschool.fschool.Model.Repositories.UserRepository;
-import com.fschool.fschool.Model.Services.Authentication;
+import com.fschool.fschool.Model.Services.AuthenticationService;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.assertj.core.api.Assertions;
@@ -29,7 +29,7 @@ public class AuthinticationTest {
 
     @Autowired
     @InjectMocks
-    private Authentication authentication;
+    private AuthenticationService authentication;
 
     private User user1;
     private User user2;

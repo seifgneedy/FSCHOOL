@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import SignIn from "../views/SignIn.vue";
-import AdminView from "../views/AdminView.vue";
+import AdminView from "../views/admin.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -11,10 +11,10 @@ const routes = [
     component: SignIn,
   },
   {
-    path:"/AdminView",
-    name:"AdminView",
-    component:AdminView,
-  }
+    path: "/admin",
+    name: "admin",
+    component: AdminView,
+  },
   // {
   //   path: "/about",
   //   name: "About",

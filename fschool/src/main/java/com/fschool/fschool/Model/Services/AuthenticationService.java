@@ -9,10 +9,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
-public class Authentication {
+public class AuthenticationService {
     private UserRepository userRepository;
     @Autowired
-    Authentication(UserRepository userRepository){
+    AuthenticationService(UserRepository userRepository){
         this.userRepository=userRepository;
     }
     public Optional<User> authenticate(String email,String password){

@@ -4,7 +4,7 @@ import java.util.Optional;
 import javax.servlet.http.*;
 
 import com.fschool.fschool.Model.Entities.User;
-import com.fschool.fschool.Model.Services.Authentication;
+import com.fschool.fschool.Model.Services.AuthenticationService;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class SignInController {
     final static int EIGHT_DAYS=8 * 24 * 60 * 60;
     @Autowired
-    private Authentication authentication;
+    private AuthenticationService authentication;
     @PostMapping("/sign-in")
     public String signIn (@RequestBody String userCredentials,
                         HttpServletResponse response){
@@ -24,7 +24,6 @@ public class SignInController {
 		String password = obj.getString("Password");
         Optional<User> user = authentication.authenticate(email, password);
         if( !user.isPresent()){
-            System.out.println("Not exists");
             return "Incorrect Credentials";
         }
         Cookie cookie = new Cookie("id",Long.toString(user.get().getId()));

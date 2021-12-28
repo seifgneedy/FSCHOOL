@@ -35,6 +35,10 @@ public class AdminController {
     public List<User> getTeachers(){
         return adminService.getTeachers();
     }
+    @GetMapping(path = "/admin/admins")
+    public List<User> getAdmins(){
+        return adminService.getAdmins();
+    }
 
     @PostMapping("/admin/user")
     public Long addUser (@RequestBody User user){

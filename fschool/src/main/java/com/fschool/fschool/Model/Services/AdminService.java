@@ -27,7 +27,9 @@ public class AdminService {
     public List<User> getTeachers() {
         return userRepository.findByRole("teacher");
     }
-
+    public List<User> getAdmins(){
+        return userRepository.findByRole("admin");
+    }
     public List<Course> getCourses() {
         return courseRepository.findAll();
     }

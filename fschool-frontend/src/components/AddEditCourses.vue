@@ -15,15 +15,19 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="networkError" max-width="340px">
           <v-card>
-          <v-alert type="error">
-            Network Error. Please try again later.
-          </v-alert>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" align="center" text @click="networkError = false"
-            >OK</v-btn
-          >
-          </v-card-actions>
+            <v-alert type="error">
+              Network Error. Please try again later.
+            </v-alert>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                align="center"
+                text
+                @click="networkError = false"
+                >OK</v-btn
+              >
+            </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog
@@ -123,7 +127,7 @@ export default {
     invalidCourseCode: false,
     currentlyLoading: true,
     networkError: false,
-    courseOldName:'',
+    courseOldName: "",
     headers: [
       {
         text: "Code",
@@ -173,9 +177,13 @@ export default {
   methods: {
     async initialize() {
       // Getting current courses
-      await AXIOS.get("admin/courses", {}).then((res) => {
-        this.courses = res.data;
-      }).catch(() => {this.networkError = true});
+      await AXIOS.get("admin/courses", {})
+        .then((res) => {
+          this.courses = res.data;
+        })
+        .catch(() => {
+          this.networkError = true;
+        });
       this.currentlyLoading = false;
     },
 
@@ -194,11 +202,13 @@ export default {
     },
     async deleteItemConfirm() {
       let response;
-      await AXIOS.delete(`admin/course?code=${this.editedItem.code}`, {}).then(
-        (res) => {
+      await AXIOS.delete(`admin/course?code=${this.editedItem.code}`, {})
+        .then((res) => {
           response = res.data;
-        }
-      ).catch(() => {this.networkError = true});
+        })
+        .catch(() => {
+          this.networkError = true;
+        });
       if (response) this.courses.splice(this.editedIndex, 1);
       this.closeDelete();
     },
@@ -221,11 +231,13 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         //Editing
-        if(this.courses[this.editedIndex].name !== this.editedItem.name){
+        if (this.courses[this.editedIndex].name !== this.editedItem.name) {
           await AXIOS.put(
             `admin/updateCourseName?courseCode=${this.editedItem.code}&courseName=${this.editedItem.name}`,
             {}
-          ).catch(() => {this.networkError = true});
+          ).catch(() => {
+            this.networkError = true;
+          });
           Object.assign(this.courses[this.editedIndex], this.editedItem);
         }
       } else {
@@ -234,9 +246,13 @@ export default {
         await AXIOS.post(
           `admin/course?code=${this.editedItem.code}&name=${this.editedItem.name}`,
           {}
-        ).then((res) => {
-          response = res.data;
-        }).catch(() => {this.networkError = true});
+        )
+          .then((res) => {
+            response = res.data;
+          })
+          .catch(() => {
+            this.networkError = true;
+          });
         if (response) this.courses.push(this.editedItem);
         else {
           this.invalidCourseCode = true;

@@ -14,15 +14,19 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="networkError" max-width="340px">
           <v-card>
-          <v-alert type="error">
-            Network Error. Please try again later.
-          </v-alert>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" align="center" text @click="networkError = false"
-            >OK</v-btn
-          >
-          </v-card-actions>
+            <v-alert type="error">
+              Network Error. Please try again later.
+            </v-alert>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                align="center"
+                text
+                @click="networkError = false"
+                >OK</v-btn
+              >
+            </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="addMemberDialog" max-width="500px">
@@ -42,15 +46,11 @@
                     required
                   ></v-text-field>
                 </v-row>
-                <v-row v-if="invalidId" >
-                  <v-alert type="error">
-                    Invalid ID
-                  </v-alert>
+                <v-row v-if="invalidId">
+                  <v-alert type="error"> Invalid ID </v-alert>
                 </v-row>
-                <v-row v-if="enterIdWarning" >
-                  <v-alert type="warning">
-                    Please enter a valid ID
-                  </v-alert>
+                <v-row v-if="enterIdWarning">
+                  <v-alert type="warning"> Please enter a valid ID </v-alert>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -138,12 +138,16 @@ export default {
       await AXIOS.get(
         `admin/courseMembers?courseCode=${this.courseCode}&role=${this.userRole}`,
         {}
-      ).then((res) => {
-        this.members = res.data;
-        this.members.forEach((member)=>{
-          member.name = member.firstName + " " + member.lastName;
+      )
+        .then((res) => {
+          this.members = res.data;
+          this.members.forEach((member) => {
+            member.name = member.firstName + " " + member.lastName;
+          });
         })
-      }).catch(() => {this.networkError = true});
+        .catch(() => {
+          this.networkError = true;
+        });
       this.currentlyLoading = false;
     },
     deleteMember(item) {
@@ -156,9 +160,13 @@ export default {
       await AXIOS.delete(
         `admin/removeFromCourse?userId=${this.addedUserId}&courseCode=${this.courseCode}`,
         {}
-      ).then((res) => {
-        response = res.data;
-      }).catch(() => {this.networkError = true});
+      )
+        .then((res) => {
+          response = res.data;
+        })
+        .catch(() => {
+          this.networkError = true;
+        });
       if (response) this.members.splice(this.deletedMemberIndex, 1);
       this.closeDeleteMember();
     },
@@ -173,7 +181,7 @@ export default {
       this.addedUserId = "";
     },
     async saveAddedMember() {
-      if(!this.addedUserId){
+      if (!this.addedUserId) {
         this.enterIdWarning = true;
         this.invalidId = false;
         return;
@@ -182,13 +190,17 @@ export default {
       await AXIOS.post(
         `admin/addToCourse?userId=${this.addedUserId}&courseCode=${this.courseCode}&role=${this.userRole}`,
         {}
-      ).then((res) => {
-        response = res.data;
-      }).catch(() => {this.networkError = true});
+      )
+        .then((res) => {
+          response = res.data;
+        })
+        .catch(() => {
+          this.networkError = true;
+        });
       if (response) {
         this.members.push({ id: this.addedUserId, name: response });
         this.closeAddMemberDialog();
-      }else{
+      } else {
         this.invalidId = true;
       }
     },

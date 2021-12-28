@@ -5,12 +5,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user:null
+    user: null,
   },
   plugins: [createPersistedState()],
   mutations: {
     setUser(state, payload) {
-      state.user= payload;
+      state.user = payload;
     },
     signOut(state) {
       state.user = null;
