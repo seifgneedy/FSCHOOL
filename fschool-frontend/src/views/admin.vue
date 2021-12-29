@@ -95,7 +95,10 @@
               > Admins </v-list-item-title>
             </v-list-item> 
             <br><br> <br><br><br>
-            <v-btn  dark @click="signOut">Sign Out</v-btn>
+            <v-btn
+              block
+              dark
+              @click="signOut">Sign Out</v-btn>
           </v-list>
         </v-navigation-drawer>
       </div>
