@@ -42,7 +42,7 @@ public class AdminServiceTest {
 
     private Course course1;
     private Course course2;
-    private List<Course> courseList =  new ArrayList<>();;
+    private List<Course> courseList =  new ArrayList<>();
 
 
     

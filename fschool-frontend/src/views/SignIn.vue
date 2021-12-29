@@ -103,8 +103,8 @@ export default {
           Role: response,
         });
         if (response == "admin") await this.$router.push("/admin");
-        else if (response == "Student") await this.$router.push("/user");
-        else if (response == "Teacher") await this.$router.push("/user");
+        else if (response == "student") await this.$router.push("/student");
+        else if (response == "teacher") await this.$router.push("/teacher");
       }
     },
     clear() {

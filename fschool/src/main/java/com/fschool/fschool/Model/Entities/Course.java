@@ -16,8 +16,9 @@ public class Course {
     @Id
     @Column(nullable = false)
     private String code;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "member_of",
     joinColumns = @JoinColumn(name = "course_id"),
