@@ -2,6 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import SignIn from "../views/SignIn.vue";
 import AdminView from "../views/admin.vue";
+import StudentView from "../views/Student.vue";
+import TeacherView from "../views/Teacher.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -14,6 +17,16 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: AdminView,
+  },
+  {
+    path: "/student",
+    name: "student",
+    component: StudentView,
+  },
+  {
+    path: "/teacher",
+    name: "teacher",
+    component: TeacherView,
   },
   // {
   //   path: "/about",
