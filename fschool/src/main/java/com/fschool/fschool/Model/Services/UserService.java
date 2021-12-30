@@ -15,13 +15,20 @@ public abstract class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public Set<Course> getCourses(Long id){
+    public List<Course> getCourses(Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
-            return user.get().getCourses();
+            return new ArrayList<Course>(user.get().getCourses());
         }
         // very bad practice
         return null;
-        
     }
+    public Course getCourse(String code){
+        Optional<Course> course = courseRepository.findByCode(code);
+        if(course.isPresent()){
+            return course.get();
+        }
+        return null;
+    }
+
 }
