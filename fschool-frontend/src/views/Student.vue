@@ -67,13 +67,13 @@
             </v-list-item>
             <br /><br />
             <br /><br /><br />
-            <v-btn dark @click="signOut">Sign Out</v-btn>
+            <v-btn block dark @click="signOut">Sign Out</v-btn>
           </v-list>
         </v-navigation-drawer>
       </div>
       <div align="center">
         <div v-show="showCourses">
-          <user-courses />
+          <user-courses :userRole="'student'" />
         </div>
         <div v-show="showAssignments">
           <h2>To Do Assignments</h2>
@@ -95,7 +95,6 @@ export default {
     UserCourses,
   },
   data() {
-
     return {
       user: this.$store.getters.getUser,
       showCourses: true,

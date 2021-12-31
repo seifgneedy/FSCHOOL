@@ -4,6 +4,7 @@ import SignIn from "../views/SignIn.vue";
 import AdminView from "../views/admin.vue";
 import StudentView from "../views/Student.vue";
 import TeacherView from "../views/Teacher.vue";
+import CourseView from "../views/Course.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: "/teacher",
     name: "teacher",
     component: TeacherView,
+  },
+  {
+    path: "/student/:code",
+    name: "course",
+    component: CourseView,
   },
   // {
   //   path: "/about",

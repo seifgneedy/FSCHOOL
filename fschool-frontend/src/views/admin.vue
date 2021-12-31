@@ -10,11 +10,9 @@
             </v-list-item-avatar>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title 
-                    id="mainItem"
-                    style="font-size:20px"
-                > Admin </v-list-item-title>
-                
+                <v-list-item-title id="mainItem" style="font-size: 20px">
+                  Admin
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -36,9 +34,7 @@
                   <v-img src="@/assets/add_course_icon.svg" />
                 </v-list-item-avatar>
               </v-list-item-icon>
-              <v-list-item-title
-                id="mainItem"
-              > Courses </v-list-item-title>
+              <v-list-item-title id="mainItem"> Courses </v-list-item-title>
             </v-list-item>
             <v-list-item
               link
@@ -46,7 +42,7 @@
                 showAddEditCourse = false;
                 showAddTeacher = true;
                 showAddStudent = false;
-                showAddAdmin=false;
+                showAddAdmin = false;
               "
             >
               <v-list-item-icon>
@@ -54,9 +50,7 @@
                   <v-img src="@/assets/teacher_avatar.svg" />
                 </v-list-item-avatar>
               </v-list-item-icon>
-              <v-list-item-title
-                id="mainItem"
-              > Teachers </v-list-item-title>
+              <v-list-item-title id="mainItem"> Teachers </v-list-item-title>
             </v-list-item>
             <v-list-item
               link
@@ -64,7 +58,7 @@
                 showAddEditCourse = false;
                 showAddTeacher = false;
                 showAddStudent = true;
-                showAddAdmin= false;
+                showAddAdmin = false;
               "
             >
               <v-list-item-icon>
@@ -72,9 +66,7 @@
                   <v-img src="@/assets/student_avatar.svg" />
                 </v-list-item-avatar>
               </v-list-item-icon>
-              <v-list-item-title
-                id="mainItem"
-              > Students </v-list-item-title>
+              <v-list-item-title id="mainItem"> Students </v-list-item-title>
             </v-list-item>
             <v-list-item
               link
@@ -90,15 +82,11 @@
                   <v-img src="@/assets/admin_avatar.svg"></v-img>
                 </v-list-item-avatar>
               </v-list-item-icon>
-              <v-list-item-title 
-                  id="mainItem"
-              > Admins </v-list-item-title>
-            </v-list-item> 
-            <br><br> <br><br><br>
-            <v-btn
-              block
-              dark
-              @click="signOut">Sign Out</v-btn>
+              <v-list-item-title id="mainItem"> Admins </v-list-item-title>
+            </v-list-item>
+            <br /><br />
+            <br /><br /><br />
+            <v-btn block dark @click="signOut">Sign Out</v-btn>
           </v-list>
         </v-navigation-drawer>
       </div>
@@ -151,7 +139,7 @@ export default {
 };
 </script>
 <style scoped>
-#mainItem{
+#mainItem {
   font-size: 16px;
   font-weight: bold;
 }

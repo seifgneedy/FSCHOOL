@@ -15,6 +15,7 @@
 <script>
 import { AXIOS } from "../http-common.js";
 export default {
+  props: ["userRole"],
   components: {},
   data: () => ({
     courses: [],
@@ -40,8 +41,8 @@ export default {
         });
       this.currentlyLoading = false;
     },
-        goToCourse(code){
-        console.log("clicked" + code)
+    goToCourse(code){
+      this.$router.push({path: `/${this.userRole}/${code}`})
     },
   },
 };
