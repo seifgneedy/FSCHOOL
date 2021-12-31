@@ -29,7 +29,7 @@ public class Course {
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "course_id")
     @JsonBackReference    
-    private List<Post> posts;
+    private Set<Post> posts;
 
     public String getCode() {
         return code;
@@ -69,6 +69,9 @@ public class Course {
     public boolean removeUser(User user) {
         user.getCourses().remove(this);
         return members.remove(user);
+    }
+    public boolean addPost(Post post){
+        return posts.add(post);
     }
 
     @Override

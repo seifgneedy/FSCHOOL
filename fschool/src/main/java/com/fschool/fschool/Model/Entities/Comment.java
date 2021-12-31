@@ -1,8 +1,10 @@
 package com.fschool.fschool.Model.Entities;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.util.Objects;
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.*;
 @Entity(name = "Comment")
@@ -24,7 +26,8 @@ public class Comment {
     private String body;
 
     @Column(nullable = false)
-    private LocalDate date;
+    @CreationTimestamp
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -1,10 +1,12 @@
 package com.fschool.fschool.Model.Entities;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.*;
 
@@ -23,7 +25,8 @@ public class Post {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate date;
+    @CreationTimestamp
+    private LocalDateTime date;
 
     @Column(nullable = false)
     private String type;
@@ -41,13 +44,17 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "post_id")
-    @JsonBackReference 
-    private List<Comment> comments;
+    @JsonBackReference
+    private Set<Comment> comments;
 
 
 
     public Long getId(){
         return id;
+    }
+
+    public boolean addComment(Comment comment){
+        return comments.add(comment);
     }
 
     @Override
