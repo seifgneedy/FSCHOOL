@@ -12,7 +12,7 @@ import lombok.*;
 
 @Entity(name="Post")
 @Table(name="post")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class Post {
     @Id
     @SequenceGenerator(name = "PostIDSequence",
@@ -48,9 +48,49 @@ public class Post {
     private Set<Comment> comments;
 
 
+    public void setId(Long id){
+        this.id=id;
+    }
 
     public Long getId(){
         return id;
+    }
+
+    public void setDate(LocalDateTime date){
+        this.date=date;
+    }
+    public LocalDateTime getDate(){
+        return date;
+    }
+    public void setType(String type){
+        this.type=type;
+    }
+    public String getType(){
+        return type;
+    }
+    public void setTitle(String title){
+        this.title=title;
+    }
+    public String getTitle(){
+        return title;
+    }
+    public void setBody(String body){
+        this.body=body;
+    }
+    public String getBody(){
+        return body;
+    }
+    public void setPublisher(User publisher){
+        this.publisher=publisher;
+    }
+    public User getPublisher(){
+        return publisher;
+    }
+    public void setComments(Set<Comment> comments){
+        this.comments=comments;
+    }
+    public Set<Comment> getComments(){
+        return comments;
     }
 
     public boolean addComment(Comment comment){
