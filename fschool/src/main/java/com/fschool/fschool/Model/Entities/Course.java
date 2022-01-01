@@ -54,6 +54,15 @@ public class Course {
     public void setMembers(Set<User> members) {
         this.members = members;
     }
+    public Set<Post> getPosts(){
+        return posts;
+    }
+    public void setPosts(Set<Post> posts){
+        this.posts=posts;
+    }
+    public boolean addPost(Post post){
+        return posts.add(post);
+    }
 
     @Override
     public String toString() {
@@ -70,9 +79,7 @@ public class Course {
         user.getCourses().remove(this);
         return members.remove(user);
     }
-    public boolean addPost(Post post){
-        return posts.add(post);
-    }
+    
 
     @Override
     public boolean equals(Object o) {
