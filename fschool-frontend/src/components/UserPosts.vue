@@ -1,6 +1,7 @@
 
 <template>
 <v-container fluid>
+   <v-card-title class="text-h3 text--primary font-weight-bold"> {{PostType}}</v-card-title>
   <v-col v-for="post in posts" :key="post.code">
   <v-card
     class="mx-auto"
@@ -31,6 +32,7 @@
             src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
           ></v-img>
         </v-list-item-avatar>
+
 
         <v-card-actions>
       <v-text
