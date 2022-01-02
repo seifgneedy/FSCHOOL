@@ -2,6 +2,8 @@ package com.fschool.fschool.Controllers;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.fschool.fschool.Model.Entities.*;
 import com.fschool.fschool.Model.Services.*;
 
@@ -9,25 +11,51 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 
-@CrossOrigin(origins = { "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:8080" },
+            allowCredentials = "true")
 @RestController
 public class StudentController {
     @Autowired
     StudentService studentService;
 
     @GetMapping(path="student/courses")
-    public List<Course> getCourses(){
-        // Getting the user id via cookies or whatever
-        ////////
-        //////////
-        ///////
-        return studentService.getCourses(0L/*The id is here.............*/);
+    public List<Course> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
+                                 HttpServletResponse response){
+        if(id.isEmpty()){
+            //Session expired or not logged in.
+            return null;
+        }
+        return studentService.getCourses(Long.valueOf(id));
     }
-    @GetMapping(path = "student/course/{code}")
+
+    @GetMapping(path="student/{courseCode}")
+    public List<Post> getCourses(@CookieValue("id") String id,
+                                @RequestParam String courseCode,
+                                HttpServletResponse response){
+        System.out.println("This is the id cookie: " + id);
+        if(id.isEmpty()){
+            //Session expired or not logged in.
+            return null;
+        }
+        // Check if user in course
+        return studentService.getPosts(courseCode);
+    }
+    /*@GetMapping(path="student/")
+    public List<Comment> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
+                                @RequestParam String courseCode,
+                                HttpServletResponse response){
+        if(id.isEmpty()){
+            //Session expired or not logged in.
+            return null;
+        }
+        // Check if user in course
+        return studentService.getPosts(courseCode);
+    }*/
+    /*@GetMapping(path = "student/course/{code}")
     public Course getCourse(@PathVariable String code) {
         // Check if user in course or not
         /////////////
         //////////////////
         return studentService.getCourse(code);
-    }
+    }*/
 }

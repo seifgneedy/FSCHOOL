@@ -9,7 +9,8 @@ import com.fschool.fschool.Model.Services.AuthenticationService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = { "http://localhost:8080" })
+@CrossOrigin(origins = { "http://localhost:8080" },
+            allowCredentials = "true")
 @RestController
 public class SignInController {
     final static int EIGHT_DAYS=8 * 24 * 60 * 60;
