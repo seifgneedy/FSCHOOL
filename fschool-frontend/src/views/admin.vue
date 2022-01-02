@@ -91,17 +91,11 @@
         </v-navigation-drawer>
       </div>
       <div align="center">
-        <div v-if="showAddEditCourse">
-          <add-edit-course />
-        </div>
-        <div v-if="showAddTeacher">
-          <user-table :userRole="'teacher'" />
-        </div>
-        <div v-if="showAddStudent">
-          <user-table :userRole="'student'" />
-        </div>
-        <div v-if="showAddAdmin">
-          <user-table :userRole="'admin'" />
+        <div>
+          <add-edit-course v-show="showAddEditCourse"/>
+          <user-table :userRole="'teacher'" v-show="showAddTeacher"/>
+          <user-table :userRole="'student'" v-show="showAddStudent"/>
+          <user-table :userRole="'admin'"  v-show="showAddAdmin"/>
         </div>
       </div>
     </v-main>

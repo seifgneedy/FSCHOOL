@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class UserService {
+public class UserService {
     @Autowired
     CourseRepository courseRepository;
     @Autowired
@@ -35,13 +35,13 @@ public abstract class UserService {
     }
 
     // do we need this?
-    public List<Post> getPosts(String courseCode) {
+    /*public List<Post> getPosts(String courseCode) {
         Optional<Course> course = courseRepository.findByCode(courseCode);
         if (course.isPresent()) {
             return List.copyOf(course.get().getPosts());
         }
         return null;
-    }
+    }*/
 
     // types should be --> post, announcement, question
     public List<Post> getPostsByType(String courseCode, String type, String userId) {

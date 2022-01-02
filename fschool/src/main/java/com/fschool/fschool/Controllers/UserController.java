@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = { "http://localhost:8080" },
             allowCredentials = "true")
 @RestController
-public class StudentController {
+public class UserController {
     @Autowired
-    StudentService studentService;
+    UserService userService;
 
-    @GetMapping(path="student/courses")
+    @GetMapping(path="courses")
     public List<Course> getCourses(@CookieValue("id") String id){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
         }
-        return studentService.getCourses(Long.valueOf(id));
+        return userService.getCourses(Long.valueOf(id));
     }
 
-    @GetMapping(path="student/{courseCode}")
+    @GetMapping(path="courses/{courseCode}")
     public List<Post> getPosts(@CookieValue("id") String id,
                                 @PathVariable("courseCode") String courseCode, 
                                 @RequestParam String PostType){
@@ -35,23 +35,18 @@ public class StudentController {
             return null;
         }
         // Check if user in course --> done in service class
-        return studentService.getPostsByType(courseCode, PostType, id);
+        return userService.getPostsByType(courseCode, PostType, id);
     }
-    /*@GetMapping(path="student/")
-    public List<Comment> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
-                                @RequestParam String courseCode){
+    @GetMapping(path="comments/{postId}")
+    public List<Comment> getComments(@CookieValue("id") String id,
+                                @PathVariable String postId){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
         }
-        // Check if user in course
-        return studentService.getPosts(courseCode);
-    }*/
-    /*@GetMapping(path = "student/course/{code}")
-    public Course getCourse(@PathVariable String code) {
-        // Check if user in course or not
-        /////////////
-        //////////////////
-        return studentService.getCourse(code);
-    }*/
+
+        // Check if user in course --> done in service class
+        //TODO  
+        return userService.getComments(Long.valueOf(postId));
+    }
 }
