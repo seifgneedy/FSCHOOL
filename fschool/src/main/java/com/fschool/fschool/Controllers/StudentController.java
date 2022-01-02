@@ -28,7 +28,7 @@ public class StudentController {
 
     @GetMapping(path="student/{courseCode}")
     public List<Post> getPosts(@CookieValue("id") String id,
-                                @RequestParam String courseCode, 
+                                @PathVariable("courseCode") String courseCode, 
                                 @RequestParam String PostType){
         if(id.isEmpty()){
             //Session expired or not logged in.

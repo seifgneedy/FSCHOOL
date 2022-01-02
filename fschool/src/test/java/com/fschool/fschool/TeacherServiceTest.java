@@ -134,7 +134,7 @@ public class TeacherServiceTest {
         List<Course> courses = teacherService.getCourses(9999L);
         assertNull(courses);
     }
-    @Test
+    /*@Test
     public void getCourseWithCodeInDB(){
         addCourses();
         when(courseRepository.findByCode("CSE 123")).thenReturn(Optional.of(courseList.get(0)));
@@ -147,6 +147,6 @@ public class TeacherServiceTest {
         when(courseRepository.findByCode("CSE 999")).thenReturn(Optional.ofNullable(null));
         Course course = teacherService.getCourse("CSE 999");
         assertNull(course);
-    }
+    }*/
 }
 
