@@ -104,13 +104,13 @@
           <h2>To Do Course's Assignments</h2>
         </div>
         <div v-if="showPosts">
-          <user-posts :postType="'post'" :userRole="this.user.role" :curseCode="this.coursecode" />
+          <user-posts :postType="'post'" :userRole="this.user.role" :courseCode="this.coursecode" :userEmail="this.user.email"/>
         </div>
         <div v-if="showAnnouncement">
-          <user-posts :postType="'announcement'" :userRole="this.user.role" :curseCode="this.coursecode"/>
+          <user-posts :postType="'announcement'" :userRole="this.user.role" :courseCode="this.coursecode" :userEmail="this.user.email"/>
         </div>
         <div v-if="showQuestions">
-          <user-posts :postType="'question'" :userRole="this.user.role" :curseCode="this.coursecode"/>
+          <user-posts :postType="'question'" :userRole="this.user.role" :courseCode="this.coursecode" :userEmail="this.user.email"/>
         </div>
       </div>
     </v-main>

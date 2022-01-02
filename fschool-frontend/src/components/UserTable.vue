@@ -37,7 +37,7 @@
           <v-spacer></v-spacer>
           <v-dialog persistent v-model="dialog" max-width="800px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="align-right" v-bind="attrs" v-on="on">
+              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                 Add New {{ userRole }}</v-btn
               >
             </template>
