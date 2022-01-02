@@ -18,8 +18,7 @@ public class TeacherController {
     TeacherService teacherService;
     
     @GetMapping(path="teacher/courses")
-    public List<Course> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
-                                HttpServletResponse response){
+    public List<Course> getCourses(@CookieValue("id") String id){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
@@ -28,9 +27,8 @@ public class TeacherController {
     }
 
     @GetMapping(path="teacher/{courseCode}")
-    public List<Post> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
-                                @RequestParam String courseCode,
-                                HttpServletResponse response){
+    public List<Post> getPosts(@CookieValue("id") String id,
+                                @RequestParam String courseCode){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;

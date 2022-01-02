@@ -19,8 +19,7 @@ public class StudentController {
     StudentService studentService;
 
     @GetMapping(path="student/courses")
-    public List<Course> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
-                                 HttpServletResponse response){
+    public List<Course> getCourses(@CookieValue("id") String id){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
@@ -29,10 +28,8 @@ public class StudentController {
     }
 
     @GetMapping(path="student/{courseCode}")
-    public List<Post> getCourses(@CookieValue("id") String id,
-                                @RequestParam String courseCode,
-                                HttpServletResponse response){
-        System.out.println("This is the id cookie: " + id);
+    public List<Post> getPosts(@CookieValue("id") String id,
+                                @RequestParam String courseCode){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
@@ -42,8 +39,7 @@ public class StudentController {
     }
     /*@GetMapping(path="student/")
     public List<Comment> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
-                                @RequestParam String courseCode,
-                                HttpServletResponse response){
+                                @RequestParam String courseCode){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
