@@ -24,7 +24,6 @@ public class AddPostTest {
     @Autowired 
     private UserRepository userRepository;
 
-    private List<Course> courses= new ArrayList<>();
     @BeforeAll
     public static void addCourses(@Autowired CourseRepository courseRepository){
         Course course = new Course();

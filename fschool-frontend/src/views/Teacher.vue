@@ -72,13 +72,13 @@
         </v-navigation-drawer>
       </div>
       <div align="center">
-        <div v-show="showCourses">
+        <div v-if="showCourses">
           <user-courses :userRole="'teacher'" />
         </div>
-        <div v-show="showAssignments">
+        <div v-if="showAssignments">
           <h2>To Do Assignments</h2>
         </div>
-        <div v-show="showCalendar">
+        <div v-if="showCalendar">
           <h2>To Do Calendar</h2>
         </div>
       </div>

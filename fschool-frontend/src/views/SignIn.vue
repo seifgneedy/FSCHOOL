@@ -100,7 +100,7 @@ export default {
         this.alert = false;
         this.$store.commit("setUser", {
           email: this.email,
-          Role: response,
+          role: response,
         });
         if (response == "admin") await this.$router.push("/admin");
         else if (response == "student") await this.$router.push("/student");

@@ -34,6 +34,11 @@ const routes = [
     name: "course",
     component: CourseView,
   },
+  {
+    path: "/teacher/:code",
+    name: "course",
+    component: CourseView,
+  },
   // {
   //   path: "/about",
   //   name: "About",

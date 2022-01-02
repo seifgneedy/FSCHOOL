@@ -32,14 +32,10 @@ export default {
     async initialize() {
       //TODO get this user's courses instead
       // Getting current courses
-      await AXIOS.get("admin/courses", {})
+      await AXIOS.get(`/${this.userRole}/courses`, {})
         .then((res) => {
           this.courses = res.data;
         })
-        .catch(() => {
-          this.networkError = true;
-        });
-      this.currentlyLoading = false;
     },
     goToCourse(code){
       this.$router.push({path: `/${this.userRole}/${code}`})

@@ -46,7 +46,7 @@ public class User {
     private String role;
 
     @ManyToMany(mappedBy = "members", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonBackReference(value = "courses")
     Set<Course> courses = new HashSet<>();
 
     public Long getId() {

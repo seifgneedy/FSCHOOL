@@ -91,16 +91,16 @@
         </v-navigation-drawer>
       </div>
       <div align="center">
-        <div v-show="showAddEditCourse">
+        <div v-if="showAddEditCourse">
           <add-edit-course />
         </div>
-        <div v-show="showAddTeacher">
+        <div v-if="showAddTeacher">
           <user-table :userRole="'teacher'" />
         </div>
-        <div v-show="showAddStudent">
+        <div v-if="showAddStudent">
           <user-table :userRole="'student'" />
         </div>
-        <div v-show="showAddAdmin">
+        <div v-if="showAddAdmin">
           <user-table :userRole="'admin'" />
         </div>
       </div>

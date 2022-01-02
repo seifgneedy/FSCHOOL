@@ -23,12 +23,12 @@ public class Course {
     @JoinTable(name = "member_of",
     joinColumns = @JoinColumn(name = "course_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id"))
-    @JsonBackReference
+    @JsonBackReference(value = "members")
     private Set<User> members = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "course_id")
-    @JsonBackReference    
+    @JsonBackReference(value = "posts")    
     private Set<Post> posts;
 
     public String getCode() {

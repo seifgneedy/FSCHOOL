@@ -44,7 +44,7 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "post_id")
-    @JsonBackReference
+    @JsonBackReference(value = "comments")
     private Set<Comment> comments;
 
 

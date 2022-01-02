@@ -2,7 +2,6 @@ package com.fschool.fschool.Controllers;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletResponse;
 
 import com.fschool.fschool.Model.Entities.*;
 import com.fschool.fschool.Model.Services.*;
@@ -29,13 +28,14 @@ public class StudentController {
 
     @GetMapping(path="student/{courseCode}")
     public List<Post> getPosts(@CookieValue("id") String id,
-                                @RequestParam String courseCode){
+                                @RequestParam String courseCode, 
+                                @RequestParam String PostType){
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
         }
-        // Check if user in course
-        return studentService.getPosts(courseCode);
+        // Check if user in course --> done in service class
+        return studentService.getPostsByType(courseCode, PostType, id);
     }
     /*@GetMapping(path="student/")
     public List<Comment> getCourses(@CookieValue(value = "id", defaultValue = "") String id,
