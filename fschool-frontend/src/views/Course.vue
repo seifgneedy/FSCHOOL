@@ -16,7 +16,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title id="mainItem" style="font-size: 20px">
-                  <h2 v-text="this.$route.params.code"></h2>
+                  <h2 v-text="coursecode"></h2>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -104,13 +104,13 @@
           <h2>To Do Course's Assignments</h2>
         </div>
         <div v-if="showPosts">
-          <user-posts :postType="'post'" :userRole="this.user.role" />
+          <user-posts :postType="'post'" :userRole="this.user.role" :curseCode="this.coursecode" />
         </div>
         <div v-if="showAnnouncement">
-          <user-posts :postType="'announcement'" :userRole="this.user.role" />
+          <user-posts :postType="'announcement'" :userRole="this.user.role" :curseCode="this.coursecode"/>
         </div>
         <div v-if="showQuestions">
-          <user-posts :postType="'question'" :userRole="this.user.role" />
+          <user-posts :postType="'question'" :userRole="this.user.role" :curseCode="this.coursecode"/>
         </div>
       </div>
     </v-main>
@@ -125,6 +125,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.getUser,
+      coursecode:this.$route.params.code,
       showPosts: true,
       showAnnouncement: false,
       showQuestions: false,
