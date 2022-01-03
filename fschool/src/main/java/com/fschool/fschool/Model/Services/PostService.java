@@ -25,23 +25,24 @@ public class PostService {
             return null;
         if (course.get().getMembers().contains(user.get())) {
             List<Post> posts=course.get().getPosts()
-                            .stream().filter(post->post.getType()==type).toList();
+                            .stream().filter(post->post.getType().equals(type)).toList();
+                            
             posts.sort((first,second)->first.getDate().compareTo(second.getDate()));
             return posts;
         }
         return null;
     }
-    public boolean addPost(String courseCode,Post post,Long userId){
+    public Long addPost(String courseCode,Post post,Long userId){
         Optional<User> publisher=userRepository.findById(userId);
         Optional<Course> course=courseRepository.findByCode(courseCode);
         if(!publisher.isPresent()||!course.isPresent())
-            return false;
+            return 0L;
         if(course.get().getMembers().contains(publisher.get())){
             post.setPublisher(publisher.get());
             course.get().addPost(post);
-            courseRepository.save(course.get());
-            return true;
+            post=postRepository.save(post);
+            return post.getId();
         }
-        return false;
+        return 0L;
     }
 }
