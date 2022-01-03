@@ -33,14 +33,16 @@ public class UserController {
     @GetMapping(path="courses/{courseCode}")
     public List<Post> getPosts(@CookieValue("id") String id,
                                 @PathVariable("courseCode") String courseCode, 
-                                @RequestParam String PostType){
+                                @RequestParam String postType){
+
         if(id.isEmpty()){
             //Session expired or not logged in.
             return null;
         }
         // Check if user in course --> done in service class
-        return postService.getPostsByType(courseCode, PostType, id);
+        return postService.getPostsByType(courseCode, postType, id);
     }
+
     @GetMapping(path="comments/{postId}")
     public List<Comment> getComments(@CookieValue("id") String id,
                                 @PathVariable String postId){
@@ -53,13 +55,14 @@ public class UserController {
         //TODO  
         return commentService.getComments(Long.valueOf(postId));
     }
+    
     @PostMapping(path="post")
-    public Long addPost(@CookieValue("id") String id,
+    public Post addPost(@CookieValue("id") String id,
                             @RequestParam String courseCode,
                             @RequestBody String postString){
                                 //TODO: try to parse the string as Post object
         if(id.isEmpty()){
-            return -1L;
+            return null;
         }
         JSONObject postJson = new JSONObject(postString);
         Post post = new Post();
@@ -69,11 +72,11 @@ public class UserController {
         return postService.addPost(courseCode, post,Long.valueOf(id));
     }
     @PostMapping(path = "comment")
-    public Long addComment(@CookieValue("id") String id,
+    public Comment addComment(@CookieValue("id") String id,
                                 @RequestParam String postId,
                                 @RequestBody String commentString){
         if(id.isEmpty())
-            return -1L;
+            return null;
         Comment comment = new Comment();
         comment.setBody(new JSONObject(commentString).getString("body"));
         return commentService.addComment(Long.valueOf(postId),comment,Long.valueOf(id));

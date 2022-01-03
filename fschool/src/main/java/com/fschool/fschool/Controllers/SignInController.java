@@ -19,7 +19,6 @@ public class SignInController {
     @PostMapping("/sign-in")
     public String signIn (@RequestBody String userCredentials,
                         HttpServletResponse response){
-        System.out.println(userCredentials);
         JSONObject obj = new JSONObject(userCredentials);
 		String email = obj.getString("Email");
 		String password = obj.getString("Password");

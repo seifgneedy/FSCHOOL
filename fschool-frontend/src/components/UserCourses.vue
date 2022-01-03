@@ -32,7 +32,7 @@ export default {
     async initialize() {
       //TODO get this user's courses instead
       // Getting current courses
-      await AXIOS.get(`/${this.userRole}/courses`, {})
+      await AXIOS.get("courses", {})
         .then((res) => {
           this.courses = res.data;
         })

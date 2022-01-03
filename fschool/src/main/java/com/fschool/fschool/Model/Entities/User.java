@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
@@ -12,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity(name = "User")
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @SequenceGenerator(name = "UserIDSequence",
@@ -40,6 +42,7 @@ public class User {
     private LocalDate birthDate;
 
     @Column(nullable = false, name = "hashedPassword")
+    @JsonBackReference(value = "password")
     private String password;
 
     @Column(nullable = false)

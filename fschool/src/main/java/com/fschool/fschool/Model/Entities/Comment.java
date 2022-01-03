@@ -12,7 +12,6 @@ import lombok.*;
 @Entity(name = "Comment")
 @Table(name = "comment")
 @AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
 public class Comment {
     @Id
     @SequenceGenerator(name = "CommentIDSequence",
@@ -32,42 +31,53 @@ public class Comment {
     private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "post")
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
-    @JsonBackReference
     private User publisher;
 
-    public Long getId(){
+
+
+    public Long getId() {
         return id;
     }
-    public void setId(Long id){
-        this.id=id;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getBody(){
+
+    public String getBody() {
         return body;
     }
-    public void setBody(String body){
-        this.body=body;
+
+    public void setBody(String body) {
+        this.body = body;
     }
-    public LocalDateTime getDate(){
+
+    public LocalDateTime getDate() {
         return date;
     }
-    public void setDate(LocalDateTime date){
-        this.date=date;
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
-    public User getPublisher(){
-        return publisher;
-    }
-    public void setPublisher(User publisher){
-        this.publisher=publisher;
-    }
-    public Post getPost(){
+
+    public Post getPost() {
         return post;
     }
-    public void setPost(Post post){
-        this.post=post;
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public User getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
     }
 
     @Override

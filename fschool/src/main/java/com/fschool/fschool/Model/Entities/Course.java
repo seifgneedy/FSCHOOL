@@ -26,10 +26,9 @@ public class Course {
     @JsonBackReference(value = "members")
     private Set<User> members = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "course_id")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonBackReference(value = "posts")    
-    private Set<Post> posts;
+    private Set<Post> posts = new HashSet<>();
 
     public String getCode() {
         return code;

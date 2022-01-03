@@ -4,7 +4,12 @@
       {{ postType[0].toUpperCase() + postType.substring(1) + "s" }}
     </v-card-title>
     <v-row justify="end">
-      <v-dialog v-model="postdialog" persistent :retain-focus="false" max-width="600px">
+      <v-dialog
+        v-model="postdialog"
+        persistent
+        :retain-focus="false"
+        max-width="600px"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             color="primary"
@@ -13,7 +18,7 @@
             v-on="on"
             @click="addpostError = false"
           >
-            New {{ postType[0].toUpperCase() + postType.substring(1) }}
+            New Post
           </v-btn>
         </template>
         <v-card>
@@ -26,6 +31,7 @@
                 <v-col cols="12" sm="6" md="4">
                   <div v-if="userRole == 'teacher'">
                     <v-select
+                      v-model="newpost.type"
                       label="post type*"
                       :items="['announcement', 'post', 'question']"
                       :error-messages="typeError"
@@ -36,6 +42,7 @@
                   </div>
                   <div v-if="userRole == 'student'">
                     <v-select
+                      v-model="newpost.type"
                       label="post type*"
                       :items="['post', 'question']"
                       :error-messages="typeError"
@@ -82,22 +89,23 @@
               >Error adding post:{{ postError }}</v-alert
             >
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closePostDialog()"> Cancle </v-btn>
+            <v-btn color="blue darken-1" text @click="closePostDialog()">
+              Cancel
+            </v-btn>
             <v-btn color="blue darken-1" text @click="addpost()"> Add </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-row>
-    <v-col v-for="post in posts" :key="post.code">
+    <v-col v-for="post in posts" :key="post.id">
       <v-card class="mx-auto" color="#0F0639" dark max-width="600">
         <v-card-title>
           <v-icon large left> </v-icon>
 
-          <span class="text-h6 font-weight-light">"Post Title"</span>
+          <span class="text-h6 font-weight-light" v-text="post.title"></span>
         </v-card-title>
 
-        <v-card-text class="text-h5 font-weight-bold">
-          "Post body"
+        <v-card-text class="text-h5 font-weight-bold" v-text="post.body">
         </v-card-text>
 
         <v-card-actions>
@@ -107,14 +115,16 @@
             </v-list-item-avatar>
 
             <v-card-action>
-              <v-text color="deep-purple lighten-2" text>
-                user@schoole.com
+              <v-text color="deep-purple lighten-2">
+                {{ post.publisher.firstName + " " + post.publisher.lastName }}
               </v-text>
             </v-card-action>
             <v-row align="center" justify="end">
-              <span class="subheading mr-2">"time"</span>
+              <span class="subheading mr-2"
+                >{{ new Date(post.date).toLocaleString("en-GB") }}
+              </span>
               <span class="mr-1">||</span>
-              <v-icon class="mr-1" @click="openPost(post.code)">
+              <v-icon class="mr-1" @click="openPost(post.id)">
                 mdi-comment-multiple-outline
               </v-icon>
             </v-row>
@@ -124,10 +134,12 @@
               :retain-focus="false"
             >
               <v-card align="center">
-                <v-col v-for="comment in comments" :key="comment.code">
+                <v-col v-for="comment in comments" :key="comment.id">
                   <v-card class="mx-auto" color="#0F0639" dark max-width="600">
-                    <v-card-text class="text-h5 font-weight-bold">
-                      "Comment body"
+                    <v-card-text
+                      class="text-h5 font-weight-bold"
+                      v-text="comment.body"
+                    >
                     </v-card-text>
                     <v-card-actions>
                       <v-list-item class="grow">
@@ -138,10 +150,21 @@
                           ></v-img>
                         </v-list-item-avatar>
                         <v-card-action>
-                          <v-text color="deep-purple lighten-2" text>
-                            user@fschool.com
+                          <v-text color="deep-purple lighten-2">
+                            {{
+                              comment.publisher.firstName +
+                              " " +
+                              comment.publisher.lastName
+                            }}
                           </v-text>
                         </v-card-action>
+                        <v-row align="center" justify="end">
+                          <span class="subheading mr-2"
+                            >{{
+                              new Date(comment.date).toLocaleString("en-GB")
+                            }}
+                          </span>
+                        </v-row>
                       </v-list-item>
                     </v-card-actions>
                   </v-card>
@@ -152,57 +175,73 @@
                     >Close</v-btn
                   >
                   <v-spacer />
-                   <v-row justify="end">
-      <v-dialog v-model="commentdialog" :retain-focus="false" max-width="600px">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-             @click="addCommentError = false"
-            v-on="on"
-          >
-           Add comment
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="text-h5 " >NEW COMMENT</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12">
-                  <v-textarea
-                    name="comment body*"
-                    label="comment body*"
-                    :error-messages="commentBodyError"
-                    v-model="newcomment.body"
-                    outlined
-                    type="text"
-                    @input="$v.newcomment.body.$touch()"
-                    @blur="$v.newcomment.body.$touch()"
-                    required
-                  ></v-textarea>
-                </v-col>
-              </v-row>
-            </v-container>
-            <small>*indicates required field</small>
-          </v-card-text>
-          <v-card-actions>
-            <v-alert
-              v-show="addCommentError"
-              type="error"
-              style="font-size: 19px; font-weight: bold"
-              >Error adding post:{{ CommentError }}</v-alert
-            >
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeCommentDialog()"> Cancle </v-btn>
-            <v-btn color="blue darken-1" text @click="addComment()"> Add </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
+                  <v-row justify="end">
+                    <v-dialog
+                      v-model="commentdialog"
+                      :retain-focus="false"
+                      max-width="600px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          color="primary"
+                          dark
+                          v-bind="attrs"
+                          @click="addCommentError = false"
+                          v-on="on"
+                        >
+                          Add comment
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title>
+                          <span class="text-h5">NEW COMMENT</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
+                            <v-row>
+                              <v-col cols="12">
+                                <v-textarea
+                                  name="comment body*"
+                                  label="comment body*"
+                                  :error-messages="commentBodyError"
+                                  v-model="newcomment.body"
+                                  outlined
+                                  type="text"
+                                  @input="$v.newcomment.body.$touch()"
+                                  @blur="$v.newcomment.body.$touch()"
+                                  required
+                                ></v-textarea>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                          <small>*indicates required field</small>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-alert
+                            v-show="addCommentError"
+                            type="error"
+                            style="font-size: 19px; font-weight: bold"
+                            >Error adding post:{{ CommentError }}</v-alert
+                          >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="closeCommentDialog()"
+                          >
+                            Cancle
+                          </v-btn>
+                          <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="addComment()"
+                          >
+                            Add
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
                   <v-spacer />
                 </v-card-actions>
               </v-card>
@@ -215,43 +254,45 @@
 </template>
 <script>
 import { AXIOS } from "../http-common.js";
-import { required, email } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 export default {
-  props: ["postType", "userRole", "courseCode", "userEmail"],
+  props: ["postType", "userRole"],
   components: {},
+  watch: {
+    postType: {
+      immediate: true,
+      handler() {
+        this.initialize();
+      },
+    },
+  },
   data: () => ({
     showComments: false,
     posts: [],
+    comments: [],
     postdialog: false,
-    commentdialog:false,
+    commentdialog: false,
     postError: "",
-    CommentError:"",
+    CommentError: "",
     addpostError: false,
-    addCommentError:false,
-    currentPost:"",
+    addCommentError: false,
+    currentPost: "",
+    currentCourse: "",
     newpost: {
       type: "",
       title: "",
       body: "",
-      email: "",
-      Coursecode: "",
     },
     newcomment: {
       body: "",
-      postid: "",
-      email: "",
     },
-     defultnewcomment: {
+    defultnewcomment: {
       body: "",
-      postid: "",
-      user: "",
     },
     defultnewpost: {
       type: "",
       title: "",
       body: "",
-      email: "",
-      Coursecode: "",
     },
   }),
   validations: {
@@ -265,13 +306,6 @@ export default {
       body: {
         required,
       },
-      email: {
-        required,
-        email,
-      },
-      Coursecode: {
-        required,
-      },
     },
     newcomment: {
       body: {
@@ -280,21 +314,22 @@ export default {
     },
   },
 
-  created() {
-    this.initialize();
-  },
-
   methods: {
     async initialize() {
       //TODO get this course's posts instead
-      // Getting  courses
-      await AXIOS.get("admin/courses", {}).then((res) => {
+      // Getting  courses "courses/courseCode/type"
+      this.currentCourse = this.$route.params.code;
+      await AXIOS.get(
+        `courses/${this.currentCourse}/?postType=${this.postType}`,
+        {}
+      ).then((res) => {
         this.posts = res.data;
-      });
+      }); 
     },
+
     async openPost(postId) {
       //get post comments
-      await AXIOS.get("admin/courses", {}).then((res) => {
+      await AXIOS.get(`comments/${postId}`, {}).then((res) => {
         this.comments = res.data;
       });
       this.showComments = true;
@@ -309,11 +344,9 @@ export default {
         this.$v.newpost.body.$invalid
       )
         return;
-      this.newpost.email = this.userEmail;
-      this.newpost.Coursecode = this.CourseCode;
       let response,
         networkError = false;
-      await AXIOS.post("admin/user", this.newpost)
+      await AXIOS.post(`post/?courseCode=${this.currentCourse}`, this.newpost)
         .then((res) => {
           response = res.data;
         })
@@ -321,25 +354,21 @@ export default {
           networkError = true;
           response = 0;
         });
-      if (response != 0) {
-        this.close();
-      } else if (networkError) {
+      if (response !=0 && response != null) {
+        this.closePostDialog();
+        this.posts.unshift(response);
+    } else if (networkError) {
         this.addpostError = true;
         this.postError = "Network Error,Try Again";
       }
-    }, 
+    },
     //sending comments
     async addComment() {
-     this.$v.$touch();
-     if (
-        this.$v.newcomment.body.$invalid
-      )
-        return;
-        this.newcomment.email = this.userEmail;
-        this.newcomment.postid = this.currentPost;
-         let response,
+      this.$v.$touch();
+      if (this.$v.newcomment.body.$invalid) return;
+      let response,
         networkError = false;
-      await AXIOS.post("admin/user", this.newcomment)
+      await AXIOS.post(`comment/?postId=${this.currentPost}`, this.newcomment)
         .then((res) => {
           response = res.data;
         })
@@ -347,7 +376,8 @@ export default {
           networkError = true;
           response = 0;
         });
-      if (response != 0) {
+      if (response !=0 && response != null) {
+        this.comments.push(response);
         this.closeCommentDialog();
       } else if (networkError) {
         this.CommentError = true;
@@ -358,48 +388,43 @@ export default {
       this.showComments = false;
     },
     closeCommentDialog() {
-       this.$v.$reset();
+      this.$v.$reset();
       this.commentdialog = false;
       this.$nextTick(() => {
         this.newcomment = Object.assign({}, this.defultnewcomment);
       });
     },
     closePostDialog() {
-       this.$v.$reset();
+      this.$v.$reset();
       this.postdialog = false;
       this.$nextTick(() => {
         this.newpost = Object.assign({}, this.defultnewpost);
       });
     },
   },
-    computed: {
+  computed: {
     typeError() {
       const errors = [];
       if (!this.$v.newpost.type.$dirty) return errors;
-      !this.$v.newpost.type.required &&
-        errors.push("type required");
+      !this.$v.newpost.type.required && errors.push("type required");
       return errors;
     },
     titleError() {
       const errors = [];
-       if (!this.$v.newpost.title.$dirty) return errors;
-      !this.$v.newpost.title.required &&
-        errors.push("title required");
+      if (!this.$v.newpost.title.$dirty) return errors;
+      !this.$v.newpost.title.required && errors.push("title required");
       return errors;
-     
     },
     postBodyError() {
       const errors = [];
-       if (!this.$v.newpost.body.$dirty) return errors;
-      !this.$v.newpost.body.required &&
-        errors.push("body required");
+      if (!this.$v.newpost.body.$dirty) return errors;
+      !this.$v.newpost.body.required && errors.push("body required");
       return errors;
     },
-     commentBodyError() {
+    commentBodyError() {
       const errors = [];
-       if (!this.$v.newcomment.body.$dirty) return errors;
-      !this.$v.newcomment.body.required &&
-        errors.push("body required");
+      if (!this.$v.newcomment.body.$dirty) return errors;
+      !this.$v.newcomment.body.required && errors.push("body required");
       return errors;
     },
   },

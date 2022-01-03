@@ -43,12 +43,12 @@ public class Post {
     private User publisher;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "course")
     private Course course;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "post_id" , nullable = false)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonBackReference(value = "comments")
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
 
 
     public void setId(Long id){
