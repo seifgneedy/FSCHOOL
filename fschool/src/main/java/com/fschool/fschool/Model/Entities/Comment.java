@@ -30,7 +30,7 @@ public class Comment {
     private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User publisher;
 
     public Long getId(){

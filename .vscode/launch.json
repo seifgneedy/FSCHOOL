@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch tst",
+            "request": "launch",
+            "mainClass": "com.fschool.fschool.Model.Services.tst",
+            "projectName": "fschool"
+        },
+        {
+            "type": "java",
             "name": "Launch Authentication",
             "request": "launch",
             "mainClass": "com.fschool.fschool.Controllers.Authentication",

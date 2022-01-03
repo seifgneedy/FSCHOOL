@@ -44,22 +44,6 @@ public class UserService {
     }*/
 
     // types should be --> post, announcement, question
-    public List<Post> getPostsByType(String courseCode, String type, String userId) {
-        Optional<Course> course = courseRepository.findByCode(courseCode);
-        Optional<User> user = userRepository.findById(Long.valueOf(userId));
-        List<Post> posts = new ArrayList<>();
-        if (!course.isPresent() || !user.isPresent())
-            return null;
-        if (course.get().getMembers().contains(user.get())) {
-            for (Post post : course.get().getPosts()) {
-                if (post.getType().equals(type))
-                    posts.add(post);
-            }
-            return posts;
-        }
-        return null;
-
-    }
 
     public List<Comment> getComments(Long postId) {
         Optional<Post> post = postRepository.findById(postId);

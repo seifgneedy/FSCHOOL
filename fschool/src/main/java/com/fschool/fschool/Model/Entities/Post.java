@@ -39,11 +39,11 @@ public class Post {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User publisher;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id" , nullable = false)
     @JsonBackReference(value = "comments")
     private Set<Comment> comments;
 

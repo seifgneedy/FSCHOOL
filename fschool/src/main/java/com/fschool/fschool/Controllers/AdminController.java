@@ -59,7 +59,6 @@ public class AdminController {
         Course course = adminService.getCourse(code);
         return course;
     }
-
     @PostMapping(path = "admin/addToCourse")
     public String addUserToCourse(@RequestParam Long userId, @RequestParam String courseCode, @RequestParam String role) {
         return adminService.addUserToCourse(userId, courseCode, role);

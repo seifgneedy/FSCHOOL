@@ -1,8 +1,10 @@
-package com.fschool.fschool.PostTests;
+package com.fschool.fschool;
+
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
+
 
 import com.fschool.fschool.Model.Entities.*;
 import com.fschool.fschool.Model.Repositories.*;
@@ -12,11 +14,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.Rollback;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AddPostTest {
+public class PostTest {
     @Autowired
     private PostRepository postRepository;
     @Autowired 
@@ -75,7 +78,7 @@ public class AddPostTest {
     }
     @Test 
     @Order(1)
-    public void injectedCompIsNotNull() {
+    public void injectedComponentsIsNotNull() {
         Assertions.assertThat(postRepository).isNotNull();
         Assertions.assertThat(courseRepository).isNotNull();
     }
@@ -115,7 +118,38 @@ public class AddPostTest {
     }
     @Test
     @Order(4)
-    public void addPostToNotExistingCourse(){
-        
+    public void checkPostDateAddedAutomatically(){
+        Optional<Post> post = postRepository.findById(1L);
+        Assertions.assertThat(post.get().getDate()).isNotNull();
     }
+    @Test
+    @Order(5)
+    @Rollback(value = false)
+    public void addAnotherPostToExistingCourse_ShouldBeAddedCorrectly(){
+        Post post = new Post();
+        post.setTitle("Second post");
+        post.setBody("Body2");
+        post.setType("announcment");
+        post.setPublisher(userRepository.findByEmail("a@gmail.com").get());
+        Optional<Course> course = courseRepository.findByCode("CSE 111");
+        course.get().addPost(post);
+        courseRepository.save(course.get());
+        // check added
+        Optional<Course> courseWithPost=courseRepository.findByCode("CSE 111");
+        Assertions.assertThat(courseWithPost.get().getPosts().size()).isEqualTo(2);
+    }
+    @Test
+    @Order(6)
+    public void addPostWithoutPublisher_ShouldThrowException(){
+        Post post =new Post();
+        post.setTitle("Title");
+        post.setBody("Hi I'm testing here");
+        post.setType("announcment");
+        Optional<Course> course = courseRepository.findByCode("EED 22");
+        course.get().addPost(post);
+        Assertions.assertThatThrownBy(() -> {
+            courseRepository.save(course.get());
+        }).isInstanceOf(DataIntegrityViolationException.class);
+    }
+
 }
