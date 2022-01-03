@@ -19,6 +19,8 @@ public class UserController {
     UserService userService;
     @Autowired
     PostService postService;
+    @Autowired
+    CommentService commentService;
     @GetMapping(path="courses")
     public List<Course> getCourses(@CookieValue("id") String id){
         if(id.isEmpty()){
@@ -49,15 +51,15 @@ public class UserController {
 
         // Check if user in course --> done in service class
         //TODO  
-        return userService.getComments(Long.valueOf(postId));
+        return commentService.getComments(Long.valueOf(postId));
     }
     @PostMapping(path="post")
-    public boolean addPost(@CookieValue("id") String id,
+    public Long addPost(@CookieValue("id") String id,
                             @RequestParam String courseCode,
                             @RequestBody String postString){
                                 //TODO: try to parse the string as Post object
         if(id.isEmpty()){
-            return false;
+            return -1L;
         }
         JSONObject postJson = new JSONObject(postString);
         Post post = new Post();
@@ -65,5 +67,15 @@ public class UserController {
         post.setType(postJson.getString("type"));
         post.setBody(postJson.getString("body"));
         return postService.addPost(courseCode, post,Long.valueOf(id));
+    }
+    @PostMapping(path = "comment")
+    public Long addComment(@CookieValue("id") String id,
+                                @RequestParam String postId,
+                                @RequestBody String commentString){
+        if(id.isEmpty())
+            return -1L;
+        Comment comment = new Comment();
+        comment.setBody(new JSONObject(commentString).getString("body"));
+        return commentService.addComment(Long.valueOf(postId),comment,Long.valueOf(id));
     }
 }

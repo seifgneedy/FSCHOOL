@@ -4,6 +4,8 @@ import java.time.*;
 import java.util.Objects;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.*;
@@ -30,13 +32,44 @@ public class Comment {
     private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
+    @JsonBackReference
     private User publisher;
 
     public Long getId(){
         return id;
     }
-    
+    public void setId(Long id){
+        this.id=id;
+    }
+    public String getBody(){
+        return body;
+    }
+    public void setBody(String body){
+        this.body=body;
+    }
+    public LocalDateTime getDate(){
+        return date;
+    }
+    public void setDate(LocalDateTime date){
+        this.date=date;
+    }
+    public User getPublisher(){
+        return publisher;
+    }
+    public void setPublisher(User publisher){
+        this.publisher=publisher;
+    }
+    public Post getPost(){
+        return post;
+    }
+    public void setPost(Post post){
+        this.post=post;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

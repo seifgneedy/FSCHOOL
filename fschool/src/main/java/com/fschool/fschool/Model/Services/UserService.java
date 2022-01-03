@@ -43,14 +43,5 @@ public class UserService {
         return null;
     }*/
 
-    // types should be --> post, announcement, question
-
-    public List<Comment> getComments(Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
-        if (post.isPresent()) {
-            return List.copyOf(post.get().getComments());
-        }
-        return null;
-    }
 
 }

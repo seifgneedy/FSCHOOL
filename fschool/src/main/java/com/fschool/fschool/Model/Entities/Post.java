@@ -42,6 +42,9 @@ public class Post {
     @JoinColumn(name = "user_id",nullable = false)
     private User publisher;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Course course;
+
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "post_id" , nullable = false)
     @JsonBackReference(value = "comments")
@@ -86,6 +89,12 @@ public class Post {
     public User getPublisher(){
         return publisher;
     }
+    public void setCourse(Course course){
+        this.course=course;
+    }
+    public Course getCourse(){
+        return course;
+    }
     public void setComments(Set<Comment> comments){
         this.comments=comments;
     }
@@ -94,6 +103,7 @@ public class Post {
     }
 
     public boolean addComment(Comment comment){
+        comment.setPost(this);
         return comments.add(comment);
     }
 

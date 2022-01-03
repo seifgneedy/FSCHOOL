@@ -101,8 +101,7 @@ public class PostTest {
         post.setPublisher(publisher.get());
         post.setType("post");
         course.get().addPost(post);
-        courseRepository.save(course.get());
-        
+        post=postRepository.save(post);
         Optional<Course> courseWithPost = courseRepository.findByCode("CSE 111");
         // check post added correctly
         Assertions.assertThat(courseWithPost.get().getPosts().size()).isEqualTo(1);

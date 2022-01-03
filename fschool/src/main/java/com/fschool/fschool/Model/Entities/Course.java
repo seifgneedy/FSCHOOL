@@ -61,9 +61,9 @@ public class Course {
         this.posts=posts;
     }
     public boolean addPost(Post post){
+        post.setCourse(this);
         return posts.add(post);
     }
-
     @Override
     public String toString() {
         return "Course [code=" + code + ", members=" + members + ", name=" + name + "]";
