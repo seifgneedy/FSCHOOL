@@ -28,7 +28,9 @@ public class PostRepositoryTest {
     private UserRepository userRepository;
 
     @BeforeAll
-    public static void addCourses(@Autowired CourseRepository courseRepository){
+    public static void addCourses(@Autowired CourseRepository courseRepository, @Autowired PostRepository postRepository){
+        courseRepository.deleteAll();
+        postRepository.deleteAll();
         Course course = new Course();
         course.setCode("CSE 111");
         course.setName("Algorithms");
@@ -44,6 +46,7 @@ public class PostRepositoryTest {
     }
     @BeforeAll
     public static void addUsers(@Autowired UserRepository userRepository){
+        userRepository.deleteAll();
         User user = new User();
         user.setEmail("a@gmail.com");
         user.setRole("student");

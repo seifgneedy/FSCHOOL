@@ -92,10 +92,10 @@
       </div>
       <div align="center">
         <div>
-          <add-edit-course v-show="showAddEditCourse"/>
-          <user-table :userRole="'teacher'" v-show="showAddTeacher"/>
-          <user-table :userRole="'student'" v-show="showAddStudent"/>
-          <user-table :userRole="'admin'"  v-show="showAddAdmin"/>
+          <add-edit-course v-show="showAddEditCourse" />
+          <user-table :userRole="'teacher'" v-show="showAddTeacher" />
+          <user-table :userRole="'student'" v-show="showAddStudent" />
+          <user-table :userRole="'admin'" v-show="showAddAdmin" />
         </div>
       </div>
     </v-main>

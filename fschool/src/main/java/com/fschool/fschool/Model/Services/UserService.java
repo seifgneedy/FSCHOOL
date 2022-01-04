@@ -22,7 +22,6 @@ public class UserService {
         if (user.isPresent()) {
             return new ArrayList<Course>(user.get().getCourses());
         }
-        // very bad practice
         return null;
     }
 

@@ -26,6 +26,7 @@ public class UserRepositoryTest {
     @Test
     @Order(1)
     public void sizeTest() {
+        userRepository.deleteAll();
         List<User> list = userRepository.findAll();
         Assertions.assertThat(list.size()).isEqualTo(userRepository.count());
     }
@@ -34,6 +35,7 @@ public class UserRepositoryTest {
     @Order(2)
     @Rollback(value = false)
     public void addOneUserTest() {
+        userRepository.deleteAll();
         User user = new User();
         user.setEmail("a@gmail.com");
         user.setRole("student");

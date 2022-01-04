@@ -52,7 +52,6 @@ public class UserController {
         }
 
         // Check if user in course --> done in service class
-        //TODO  
         return commentService.getComments(Long.valueOf(postId));
     }
     
@@ -60,7 +59,6 @@ public class UserController {
     public Post addPost(@CookieValue("id") String id,
                             @RequestParam String courseCode,
                             @RequestBody String postString){
-                                //TODO: try to parse the string as Post object
         if(id.isEmpty()){
             return null;
         }

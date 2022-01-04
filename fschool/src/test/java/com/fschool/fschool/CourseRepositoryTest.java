@@ -25,6 +25,7 @@ public class CourseRepositoryTest {
     @Test
     @Order(1)
     public void sizeTest() {
+        courseRepository.deleteAll();
         List<Course> list = courseRepository.findAll();
         Assertions.assertThat(list.size()).isEqualTo(courseRepository.count());
     }
@@ -33,6 +34,7 @@ public class CourseRepositoryTest {
     @Order(2)
     @Rollback(value = false)
     public void addOneCourseTest() {
+        courseRepository.deleteAll();
         Course course = new Course();
         course.setCode("CSE 123");
         course.setName("Computer Vision");

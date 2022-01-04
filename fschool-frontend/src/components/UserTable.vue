@@ -192,7 +192,7 @@ import {
 } from "vuelidate/lib/validators";
 import { AXIOS } from "../http-common.js";
 export default {
-    name: "UserTableComponent",
+  name: "UserTableComponent",
 
   props: ["userRole"],
   data: () => ({

@@ -328,10 +328,7 @@ export default {
     async addpost() {
       this.newpost.type = this.postType;
       this.$v.$touch();
-      if (
-        this.$v.newpost.title.$invalid ||
-        this.$v.newpost.body.$invalid
-      )
+      if (this.$v.newpost.title.$invalid || this.$v.newpost.body.$invalid)
         return;
       let response,
         networkError = false;

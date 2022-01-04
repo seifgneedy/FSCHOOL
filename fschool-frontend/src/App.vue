@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar height="50" dark color="#090a26">
-      <span style="font-size: 25px;font-weight:bold">FSCHOOL</span>
+      <span style="font-size: 25px; font-weight: bold">FSCHOOL</span>
       <v-spacer></v-spacer>
       <v-btn href="https://github.com/seifgneedy/FSCHOOL" target="_blank" text>
         <span style="font-size: 15px">Code </span>

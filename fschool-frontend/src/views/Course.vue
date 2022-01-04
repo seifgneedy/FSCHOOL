@@ -4,7 +4,7 @@
       <div style="float: left">
         <v-navigation-drawer permanent>
           <v-list>
-            <div align = "left">
+            <div align="left">
               <v-btn icon @click="goBack">
                 <v-icon>mdi-keyboard-backspace</v-icon>
               </v-btn>
@@ -76,7 +76,8 @@
 
               <v-list-item-title id="mainItem"> Questions </v-list-item-title>
             </v-list-item>
-            <v-list-item v-show="false"
+            <v-list-item
+              v-show="false"
               link
               @click="
                 showAssignments = true;
@@ -101,16 +102,16 @@
       </div>
       <div align="center">
         <div v-if="showAssignments">
-          <h2>Coming Soon:  Assignments</h2>
+          <h2>Coming Soon: Assignments</h2>
         </div>
         <div v-if="showPosts">
-          <user-posts :postType="'post'" :userRole="this.user.role"/>
+          <user-posts :postType="'post'" :userRole="this.user.role" />
         </div>
         <div v-if="showAnnouncement">
-          <user-posts :postType="'announcement'" :userRole="this.user.role"/>
+          <user-posts :postType="'announcement'" :userRole="this.user.role" />
         </div>
         <div v-if="showQuestions">
-          <user-posts :postType="'question'" :userRole="this.user.role"/>
+          <user-posts :postType="'question'" :userRole="this.user.role" />
         </div>
       </div>
     </v-main>
@@ -125,7 +126,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.getUser,
-      coursecode:this.$route.params.code,
+      coursecode: this.$route.params.code,
       showPosts: true,
       showAnnouncement: false,
       showQuestions: false,
