@@ -19,7 +19,7 @@ import org.springframework.test.annotation.Rollback;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PostTest {
+public class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
     @Autowired 
@@ -143,12 +143,47 @@ public class PostTest {
         Post post =new Post();
         post.setTitle("Title");
         post.setBody("Hi I'm testing here");
-        post.setType("announcment");
+        post.setType("announcement");
         Optional<Course> course = courseRepository.findByCode("EED 22");
         course.get().addPost(post);
         Assertions.assertThatThrownBy(() -> {
-            courseRepository.save(course.get());
+            postRepository.save(post);
         }).isInstanceOf(DataIntegrityViolationException.class);
     }
-
+    @Test
+    @Order(7)
+    public void addPostWithoutTitle_ShouldThrowException(){
+        Post post = new Post();
+        post.setBody("Post without title");
+        post.setType("announcement");
+        post.setPublisher(userRepository.findByEmail("b@gmail.com").get());
+        Course course=courseRepository.findByCode("CSE 111").get();
+        course.addPost(post);
+        Assertions.assertThatThrownBy(() -> {
+            postRepository.save(post);
+        }).isInstanceOf(DataIntegrityViolationException.class);
+    }    
+    @Test
+    @Order(8)
+    public void addPostWithoutBody_ShouldThrowException(){
+        Post post = new Post();
+        post.setTitle("Post without Body");
+        post.setType("announcement");
+        post.setPublisher(userRepository.findByEmail("b@gmail.com").get());
+        Course course=courseRepository.findByCode("CSE 111").get();
+        course.addPost(post);
+        Assertions.assertThatThrownBy(() -> {
+            postRepository.save(post);
+        }).isInstanceOf(DataIntegrityViolationException.class);
+    }
+    @Test
+    @Order(9)
+    public void addPostWithoutCourse_ShouldThrowException(){
+        Post post = new Post();
+        post.setTitle("Post without Body");
+        post.setBody("body");
+        post.setType("announcement");
+        post.setPublisher(userRepository.findByEmail("b@gmail.com").get());
+        postRepository.save(post);
+    }
 }

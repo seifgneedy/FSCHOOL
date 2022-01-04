@@ -89,7 +89,7 @@
         <v-card-title>
           <v-icon large left> </v-icon>
 
-          <span class="text-h6 font-weight-light" v-text="post.title"></span>
+          <span class="text-h4 font-weight-bold" v-text="post.title"></span>
         </v-card-title>
 
         <v-card-text class="text-h5 font-weight-bold" v-text="post.body">

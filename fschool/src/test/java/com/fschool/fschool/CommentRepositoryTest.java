@@ -5,6 +5,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CommentTest {
+public class CommentRepositoryTest {
     
 }

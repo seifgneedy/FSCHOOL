@@ -32,6 +32,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference(value = "post")
+    @JoinColumn(name = "post_id",nullable = false)
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)

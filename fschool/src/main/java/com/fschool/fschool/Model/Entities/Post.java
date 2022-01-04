@@ -44,6 +44,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference(value = "course")
+    @JoinColumn(name="course_code", nullable=false)
     private Course course;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
@@ -89,6 +90,7 @@ public class Post {
     public User getPublisher(){
         return publisher;
     }
+
     public void setCourse(Course course){
         this.course=course;
     }
