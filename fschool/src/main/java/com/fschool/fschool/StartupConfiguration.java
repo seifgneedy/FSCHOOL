@@ -11,7 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.*;
 
 @Component
-public class AfterStartupConfiguration {
+public class StartupConfiguration {
     @Autowired
 	AdminService adminService;
     @EventListener(ApplicationReadyEvent.class)
