@@ -8,6 +8,7 @@ import com.fschool.fschool.Model.Repositories.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.*;
+import org.assertj.core.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -18,8 +19,14 @@ public class CommentRepositoryTest {
     private PostRepository postRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired 
+    private CommentRepository commentRepository;
+    @Autowired
+    private UserRepository userRepository;
     @BeforeAll
-    public static void addUsers(@Autowired UserRepository userRepository){
+    public static void addUsers(@Autowired PostRepository postRepository,
+                                @Autowired CourseRepository courseRepository,
+                                @Autowired UserRepository userRepository){
         User user = new User();
         user.setEmail("a@gmail.com");
         user.setRole("student");
@@ -29,47 +36,54 @@ public class CommentRepositoryTest {
         user.setSex("m");
         user.setPassword(DigestUtils.sha256Hex("password"));
 
-        userRepository.save(user);
+        user = userRepository.save(user);
 
-        user = new User();
-        user.setEmail("b@gmail.com");
-        user.setRole("student");
-        user.setFirstName("chloe");
-        user.setLastName("todd");
-        user.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
-        user.setSex("f");
-        user.setPassword(DigestUtils.sha256Hex("pass"));
+        User user2 = new User();
+        user2.setEmail("b@gmail.com");
+        user2.setRole("student");
+        user2.setFirstName("chloe");
+        user2.setLastName("todd");
+        user2.setBirthDate(LocalDate.of(1993, Month.APRIL, 11));
+        user2.setSex("f");
+        user2.setPassword(DigestUtils.sha256Hex("pass"));
 
-        userRepository.save(user);
+        user2 =userRepository.save(user);
 
-        user = new User();
-        user.setEmail("c@gmail.com");
-        user.setRole("teacher");
-        user.setFirstName("kate");
-        user.setLastName("smith");
-        user.setBirthDate(LocalDate.of(1987, Month.SEPTEMBER, 11));
-        user.setSex("f");
-        user.setPassword(DigestUtils.sha256Hex("NOW_pass"));
-        userRepository.save(user);
-    }
-    @BeforeAll
-    public static void addCourses(@Autowired CourseRepository courseRepository){
         Course course = new Course();
         course.setCode("CSE 111");
         course.setName("Algorithms");
         course.setPosts(new HashSet<>());
+        course.addUser(user);
+        course.addUser(user2);
+        course=courseRepository.save(course);
+        
+        Post post = new Post();
+        post.setType("announcement");
+        post.setTitle("title");
+        post.setBody("Body1");
+        post.setPublisher(user);
+        course.addPost(post);
+        postRepository.save(post);
 
-        courseRepository.save(course);
-
-        course=new Course();
-        course.setCode("EED 22");
-        course.setName("Electronics");
-        course.setPosts(new HashSet<>());
-        courseRepository.save(course);
+        post = new Post();
+        post.setType("announcement");
+        post.setTitle("Title2");
+        post.setBody("Body2");
+        post.setPublisher(user2);
+        course.addPost(post);
+        postRepository.save(post);
     }
-    @BeforeAll
-    public static void addPosts(@Autowired PostRepository postRepository,
-                                @Autowired CourseRepository courseRepository){
-                                    
-                                }
+    @Test 
+    @Order(1)
+    public void injectedComponentsIsNotNull() {
+        Assertions.assertThat(postRepository).isNotNull();
+        Assertions.assertThat(courseRepository).isNotNull();
+        Assertions.assertThat(commentRepository).isNotNull();
+    }
+    @Test
+    @Order(2)
+    public void noCommentsInPost(){
+        Optional<Post> post=postRepository.findById(1L);
+        Assertions.assertThat(post.get().getComments().size()).isEqualTo(0);
+    }
 }
