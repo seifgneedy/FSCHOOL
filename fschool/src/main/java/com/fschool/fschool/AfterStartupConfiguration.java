@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import com.fschool.fschool.Model.Entities.User;
 import com.fschool.fschool.Model.Services.AdminService;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -22,7 +21,7 @@ public class AfterStartupConfiguration {
 		admin.setFirstName("Admin");
 		admin.setLastName("Account");
 		admin.setEmail("admin@admin.com");
-		admin.setPassword(DigestUtils.sha256Hex("turkish coffee"));
+		admin.setPassword("turkish coffee");
 		admin.setRole("admin");
 		admin.setSex("Male");
         admin.setBirthDate(LocalDate.now());
