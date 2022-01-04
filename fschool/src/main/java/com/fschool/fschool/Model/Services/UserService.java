@@ -33,15 +33,4 @@ public class UserService {
         }
         return null;
     }
-
-    // do we need this?
-    /*public List<Post> getPosts(String courseCode) {
-        Optional<Course> course = courseRepository.findByCode(courseCode);
-        if (course.isPresent()) {
-            return List.copyOf(course.get().getPosts());
-        }
-        return null;
-    }*/
-
-
 }
