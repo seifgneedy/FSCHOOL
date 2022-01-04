@@ -1,104 +1,91 @@
 <template>
   <v-container fluid>
-    <v-card-title class="text-h3 text--primary font-weight-bold">
-      {{ postType[0].toUpperCase() + postType.substring(1) + "s" }}
-    </v-card-title>
     <v-row justify="end">
-      <v-dialog
-        v-model="postdialog"
-        persistent
-        :retain-focus="false"
-        max-width="600px"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
-            @click="addpostError = false"
-          >
-            New Post
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="text-h5">NEW POST</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <div v-if="userRole == 'teacher'">
-                    <v-select
-                      v-model="newpost.type"
-                      label="post type*"
-                      :items="['announcement', 'post', 'question']"
-                      :error-messages="typeError"
-                      required
-                      @change="$v.newpost.type.$touch()"
-                      @blur="$v.newpost.type.$touch()"
-                    ></v-select>
-                  </div>
-                  <div v-if="userRole == 'student'">
-                    <v-select
-                      v-model="newpost.type"
-                      label="post type*"
-                      :items="['post', 'question']"
-                      :error-messages="typeError"
-                      required
-                      @change="$v.newpost.type.$touch()"
-                      @blur="$v.newpost.type.$touch()"
-                    ></v-select>
-                  </div>
-                </v-col>
-                <v-col cols="12" sm="6" md="4"> </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    name="Title/summary*"
-                    label="Title/summary*"
-                    :error-messages="titleError"
-                    v-model="newpost.title"
-                    @input="$v.newpost.title.$touch()"
-                    @blur="$v.newpost.title.$touch()"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-textarea
-                    name="post body"
-                    label="post body"
-                    :error-messages="postBodyError"
-                    v-model="newpost.body"
-                    outlined
-                    type="text"
-                    @input="$v.newpost.body.$touch()"
-                    @blur="$v.newpost.body.$touch()"
-                    required
-                  ></v-textarea>
-                </v-col>
-              </v-row>
-            </v-container>
-            <small>*indicates required field</small>
-          </v-card-text>
-          <v-card-actions>
-            <v-alert
-              v-show="addpostError"
-              type="error"
-              style="font-size: 19px; font-weight: bold"
-              >Error adding post:{{ postError }}</v-alert
+      <v-col>
+        <v-card-title
+          class="text-h3 text--primary font-weight-bold"
+          @click="initialize()"
+        >
+          {{ postType[0].toUpperCase() + postType.substring(1) + "s" }}
+        </v-card-title>
+      </v-col>
+      <v-col>
+        <v-btn icon @click="initialize()" color="primary" dark>
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+        <v-dialog
+          v-model="postdialog"
+          persistent
+          :retain-focus="false"
+          max-width="600px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              v-show="canAdd"
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+              @click="addpostError = false"
             >
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closePostDialog()">
-              Cancel
+              <v-icon>mdi-plus</v-icon>
             </v-btn>
-            <v-btn color="blue darken-1" text @click="addpost()"> Add </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">NEW {{ postType.toUpperCase() }}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4"> </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      name="Title"
+                      label="Title"
+                      :error-messages="titleError"
+                      v-model="newpost.title"
+                      @input="$v.newpost.title.$touch()"
+                      @blur="$v.newpost.title.$touch()"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-textarea
+                      name="Body"
+                      label="Body"
+                      :error-messages="postBodyError"
+                      v-model="newpost.body"
+                      outlined
+                      type="text"
+                      @input="$v.newpost.body.$touch()"
+                      @blur="$v.newpost.body.$touch()"
+                      required
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-alert
+                v-show="addpostError"
+                type="error"
+                style="font-size: 19px; font-weight: bold"
+                >Error adding post:{{ postError }}</v-alert
+              >
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closePostDialog()">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="addpost()"> Add </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
     </v-row>
     <v-col v-for="post in posts" :key="post.id">
-      <v-card class="mx-auto" color="#0F0639" dark max-width="600">
+      <v-card color="#0F0639" dark max-width="600">
         <v-card-title>
           <v-icon large left> </v-icon>
 
@@ -201,8 +188,8 @@
                             <v-row>
                               <v-col cols="12">
                                 <v-textarea
-                                  name="comment body*"
-                                  label="comment body*"
+                                  name="Comment"
+                                  label="Comment"
                                   :error-messages="commentBodyError"
                                   v-model="newcomment.body"
                                   outlined
@@ -214,7 +201,6 @@
                               </v-col>
                             </v-row>
                           </v-container>
-                          <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
                           <v-alert
@@ -262,11 +248,17 @@ export default {
     postType: {
       immediate: true,
       handler() {
+        if (this.userRole == "teacher" && this.postType == "question")
+          this.canAdd = false;
+        else if (this.userRole == "student" && this.postType == "announcement")
+          this.canAdd = false;
+        else this.canAdd = true;
         this.initialize();
       },
     },
   },
   data: () => ({
+    canAdd: true,
     showComments: false,
     posts: [],
     comments: [],
@@ -297,9 +289,6 @@ export default {
   }),
   validations: {
     newpost: {
-      type: {
-        required,
-      },
       title: {
         required,
       },
@@ -316,15 +305,14 @@ export default {
 
   methods: {
     async initialize() {
-      //TODO get this course's posts instead
-      // Getting  courses "courses/courseCode/type"
+      this.posts = [];
       this.currentCourse = this.$route.params.code;
       await AXIOS.get(
         `courses/${this.currentCourse}/?postType=${this.postType}`,
         {}
       ).then((res) => {
         this.posts = res.data;
-      }); 
+      });
     },
 
     async openPost(postId) {
@@ -337,9 +325,9 @@ export default {
     },
     //sending posts
     async addpost() {
+      this.newpost.type = this.postType;
       this.$v.$touch();
       if (
-        this.$v.newpost.type.$invalid ||
         this.$v.newpost.title.$invalid ||
         this.$v.newpost.body.$invalid
       )
@@ -354,10 +342,10 @@ export default {
           networkError = true;
           response = 0;
         });
-      if (response !=0 && response != null) {
+      if (response != 0 && response != null) {
         this.closePostDialog();
         this.posts.unshift(response);
-    } else if (networkError) {
+      } else if (networkError) {
         this.addpostError = true;
         this.postError = "Network Error,Try Again";
       }
@@ -376,7 +364,7 @@ export default {
           networkError = true;
           response = 0;
         });
-      if (response !=0 && response != null) {
+      if (response != 0 && response != null) {
         this.comments.push(response);
         this.closeCommentDialog();
       } else if (networkError) {
@@ -403,12 +391,6 @@ export default {
     },
   },
   computed: {
-    typeError() {
-      const errors = [];
-      if (!this.$v.newpost.type.$dirty) return errors;
-      !this.$v.newpost.type.required && errors.push("type required");
-      return errors;
-    },
     titleError() {
       const errors = [];
       if (!this.$v.newpost.title.$dirty) return errors;
