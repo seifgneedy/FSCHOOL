@@ -1,4 +1,4 @@
-package com.fschool.fschool;
+package com.fschool.fschool.Configuration;
 
 import java.time.LocalDate;
 

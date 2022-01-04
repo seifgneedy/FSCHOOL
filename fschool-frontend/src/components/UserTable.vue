@@ -156,7 +156,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="600px">
+          <v-dialog v-model="dialogDelete" max-width="610px">
             <v-card align="center">
               <v-card-title class="text-h6">
                 Are you sure you want to delete {{ userRole }} with ID:

@@ -184,6 +184,8 @@ public class PostRepositoryTest {
         post.setBody("body");
         post.setType("announcement");
         post.setPublisher(userRepository.findByEmail("b@gmail.com").get());
-        postRepository.save(post);
+        Assertions.assertThatThrownBy(() -> {
+            postRepository.save(post);
+        }).isInstanceOf(DataIntegrityViolationException.class);
     }
 }

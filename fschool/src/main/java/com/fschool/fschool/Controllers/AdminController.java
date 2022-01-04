@@ -70,8 +70,11 @@ public class AdminController {
     }
 
     @DeleteMapping(path = "admin/user")
-    public boolean deleteUser(@RequestParam Long id){
-        System.out.println(id);
+    public boolean deleteUser(@CookieValue("id") String cookieId
+                            ,@RequestParam Long id){
+        if(Long.valueOf(cookieId).equals(id))
+            return false;
+        System.out.println(cookieId);
         return adminService.deleteUser(id);
     }
 
