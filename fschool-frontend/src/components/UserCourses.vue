@@ -15,6 +15,8 @@
 <script>
 import { AXIOS } from "../http-common.js";
 export default {
+    name: "coursesComponent",
+
   props: ["userRole"],
   components: {},
   data: () => ({

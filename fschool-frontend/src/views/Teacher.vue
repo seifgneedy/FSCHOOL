@@ -35,7 +35,7 @@
               </v-list-item-icon>
               <v-list-item-title id="mainItem"> Courses </v-list-item-title>
             </v-list-item>
-            <v-list-item
+            <v-list-item v-show="false"
               link
               @click="
                 showCourses = false;
@@ -50,7 +50,7 @@
               </v-list-item-icon>
               <v-list-item-title id="mainItem"> Assignments </v-list-item-title>
             </v-list-item>
-            <v-list-item
+            <v-list-item v-show="false"
               link
               @click="
                 showCourses = false;

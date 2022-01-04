@@ -31,12 +31,12 @@ const routes = [
   },
   {
     path: "/student/:code",
-    name: "course",
+    name: "courseStudent",
     component: CourseView,
   },
   {
     path: "/teacher/:code",
-    name: "course",
+    name: "courseTeacher",
     component: CourseView,
   },
   // {

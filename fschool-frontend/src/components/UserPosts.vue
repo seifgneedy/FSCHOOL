@@ -242,6 +242,7 @@
 import { AXIOS } from "../http-common.js";
 import { required } from "vuelidate/lib/validators";
 export default {
+  name: "UserPosts",
   props: ["postType", "userRole"],
   components: {},
   watch: {
