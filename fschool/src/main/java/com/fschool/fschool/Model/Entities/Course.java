@@ -30,6 +30,10 @@ public class Course {
     @JsonBackReference(value = "posts")    
     private Set<Post> posts = new HashSet<>();
 
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonBackReference(value = "posts")    
+    private Set<Assignment> assignments = new HashSet<>();
+
     public String getCode() {
         return code;
     }
@@ -63,11 +67,21 @@ public class Course {
         post.setCourse(this);
         return posts.add(post);
     }
-    @Override
-    public String toString() {
-        return "Course [code=" + code + ", members=" + members + ", name=" + name + "]";
+    public void setAssignments(Set<Assignment> assignments){
+        this.assignments=assignments;
+    }
+    public Set<Assignment> getAssignments(){
+        return assignments;
+    }
+    public boolean addAssignment(Assignment assignment){
+        assignment.setCourse(this);
+        return assignments.add(assignment);
     }
 
+    public boolean removeAssignment(Assignment assignment){
+        assignment.setCourse(null);
+        return assignments.remove(assignment);
+    }
 
     public boolean addUser(User user) {
         members.add(user);
@@ -78,7 +92,11 @@ public class Course {
         user.getCourses().remove(this);
         return members.remove(user);
     }
-    
+
+    @Override
+    public String toString() {
+        return "Course [code=" + code + ", members=" + members + ", name=" + name + "]";
+    }    
 
     @Override
     public boolean equals(Object o) {

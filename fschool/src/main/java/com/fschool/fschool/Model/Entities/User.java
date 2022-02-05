@@ -52,6 +52,14 @@ public class User {
     @JsonBackReference(value = "courses")
     Set<Course> courses = new HashSet<>();
 
+    @OneToMany(
+        mappedBy = "user",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    @JsonBackReference(value = "deliverables")
+    private Set<Deliverable> deliverables = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -123,6 +131,15 @@ public class User {
 
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
+    }
+    
+
+    public Set<Deliverable> getDeliverables() {
+        return deliverables;
+    }
+
+    public void setDeliverables(Set<Deliverable> deliverables) {
+        this.deliverables = deliverables;
     }
 
     @Override
