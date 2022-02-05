@@ -77,7 +77,6 @@
               <v-list-item-title id="mainItem"> Questions </v-list-item-title>
             </v-list-item>
             <v-list-item
-              v-show="false"
               link
               @click="
                 showAssignments = true;
