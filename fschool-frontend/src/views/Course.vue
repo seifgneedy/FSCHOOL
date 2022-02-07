@@ -101,7 +101,7 @@
       </div>
       <div align="center">
         <div v-if="showAssignments">
-          <h2>Coming Soon: Assignments</h2>
+        <course-assignments  :userRole="this.user.role"  />
         </div>
         <div v-if="showPosts">
           <user-posts :postType="'post'" :userRole="this.user.role" />
@@ -119,9 +119,13 @@
 
 <script>
 import UserPosts from "../components/UserPosts.vue";
+import CourseAssignments from "../components/CourseAssignments.vue";
 export default {
   name: "course",
-  components: { UserPosts },
+  components: {
+     UserPosts,
+     CourseAssignments,
+   },
   data() {
     return {
       user: this.$store.getters.getUser,
