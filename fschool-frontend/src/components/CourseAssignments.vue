@@ -65,38 +65,38 @@
                     ></v-textarea>
 
                     <v-menu
-                        ref="menu"
-                        v-model="dateMenu"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="newAsg.dueDate"
-                            label="Due date"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          :error-messages="dueDateError"
+                      ref="menu"
+                      v-model="dateMenu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
                           v-model="newAsg.dueDate"
-                          :min="
-                            new Date(
-                              Date.now() -
-                                new Date().getTimezoneOffset() * 60000
-                            )
-                              .toISOString()
-                              .substr(0, 10)
-                          "
-                      
-                          @change="$refs.menu.save(newAsg.dueDate)"
-                        ></v-date-picker>
-                      </v-menu>
+                          label="Due date"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        :error-messages="dueDateErrors"
+                        v-model="newAsg.dueDate"
+                        :min="
+                          new Date(
+                            Date.now() - new Date().getTimezoneOffset() * 60000
+                          )
+                            .toISOString()
+                            .substr(0, 10)
+                        "
+                        @input="$v.newAsg.dueDate.$touch()"
+                        @blur="$v.newAsg.dueDate.$touch()"
+                        @change="$refs.menu.save(newAsg.dueDate)"
+                      ></v-date-picker>
+                    </v-menu>
                   </v-col>
                 </v-row>
               </v-container>
@@ -122,12 +122,11 @@
       <v-card color="#0F0639" dark max-width="600">
         <v-card-title>
           <v-icon large left> </v-icon>
-          
 
-
-
-
-          <span class="text-h4 font-weight-bold" v-text="assignment.title"></span>
+          <span
+            class="text-h4 font-weight-bold"
+            v-text="assignment.title"
+          ></span>
         </v-card-title>
 
         <v-card-text class="text-h5 font-weight-bold" v-text="assignment.body">
@@ -135,80 +134,84 @@
 
         <v-card-actions>
           <v-list-item class="grow">
-           <span > DueDate: </span>
-           <span class="subheading mr-2"
-                >{{ new Date(assignment.dueDate).toLocaleString("en-GB") }}
-              </span>
+            <span> DueDate: </span>
+            <span class="subheading mr-2"
+              >{{ new Date(assignment.dueDate).toLocaleString("en-GB") }}
+            </span>
             <v-row align="center" justify="end">
-
               <span class="subheading mr-2"
                 >{{ new Date(assignment.assigned_On).toLocaleString("en-GB") }}
               </span>
               <span class="mr-1">||</span>
 
-
-
-
-
-      <v-dialog
-          v-model="addworkdialog"
-          persistent
-          :retain-focus="false"
-          max-width="600px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              icon
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-              @click="addassError = false"
-            >
-              <v-icon>mdi-cloud-upload</v-icon>
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">AddWork</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4"> </v-col>
-                  <v-col cols="12">
-                    <v-textarea
-                      name="Body"
-                      label="Body / link for your work"
-                      :error-messages="workBodyError"
-                      v-model="newdeliver.body"
-                      outlined
-                      type="text"
-                      @input="$v.newdeliver.body.$touch()"
-                      @blur="$v.newdeliver.body.$touch()"
-                      required
-                    ></v-textarea>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-                <v-alert
-                            v-show="addworkError"
-                            type="error"
-                            style="font-size: 19px; font-weight: bold"
-                            >Error adding work:{{ workError }}</v-alert
-                          >
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeworkDialog()">
-                Cancel
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="addwork(assignment.id)"> Submit </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+              <v-dialog
+                v-model="addworkdialog"
+                persistent
+                :retain-focus="false"
+                max-width="600px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    color="primary"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="addassError = false"
+                  >
+                    <v-icon>mdi-cloud-upload</v-icon>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="text-h5">AddWork</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="4"> </v-col>
+                        <v-col cols="12">
+                          <v-textarea
+                            name="Body"
+                            label="Body / link for your work"
+                            :error-messages="workBodyError"
+                            v-model="newdeliver.body"
+                            outlined
+                            type="text"
+                            @input="$v.newdeliver.body.$touch()"
+                            @blur="$v.newdeliver.body.$touch()"
+                            required
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-alert
+                      v-show="addworkError"
+                      type="error"
+                      style="font-size: 19px; font-weight: bold"
+                      >Error adding work:{{ workError }}</v-alert
+                    >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="closeworkDialog()"
+                    >
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="addwork(assignment.id)"
+                    >
+                      Submit
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-row>
-            
           </v-list-item>
         </v-card-actions>
       </v-card>
@@ -220,16 +223,17 @@ import { AXIOS } from "../http-common.js";
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "CourseAssignments",
-  props: [ "userRole"],
+  props: ["userRole"],
   components: {},
   watch: {
     postType: {
       immediate: true,
       handler() {
-        if (this.userRole == "student")
-          this.canAdd = false;
-        else {this.canAdd = true;
-               this.addworkdialog=false;}
+        if (this.userRole == "student") this.canAdd = false;
+        else {
+          this.canAdd = true;
+          this.addworkdialog = false;
+        }
         this.initialize();
       },
     },
@@ -243,7 +247,7 @@ export default {
     workError: "",
     assError: "",
     addassError: false,
-    dateMenu:false,
+    dateMenu: false,
     currentCourse: "",
     newAsg: {
       dueDate: "",
@@ -279,7 +283,6 @@ export default {
         required,
       },
     },
-  
   },
 
   methods: {
@@ -296,11 +299,18 @@ export default {
     //sending assignment
     async addAsg() {
       this.$v.$touch();
-      if (this.$v.newAsg.title.$invalid || this.$v.newAsg.body.$invalid || this.$v.newAsg.dueDate.$invalid )
+      if (
+        this.$v.newAsg.title.$invalid ||
+        this.$v.newAsg.body.$invalid ||
+        this.$v.newAsg.dueDate.$invalid
+      )
         return;
       let response,
         networkError = false;
-      await AXIOS.post(`assignment/?courseCode=${this.currentCourse}`, this.newAsg)
+      await AXIOS.post(
+        `assignment/?courseCode=${this.currentCourse}`,
+        this.newAsg
+      )
         .then((res) => {
           response = res.data;
         })
@@ -368,6 +378,12 @@ export default {
       const errors = [];
       if (!this.$v.newdeliver.body.$dirty) return errors;
       !this.$v.newdeliver.body.required && errors.push("body required");
+      return errors;
+    },
+    dueDateErrors() {
+      const errors = [];
+      if (!this.$v.newAsg.dueDate.$dirty) return errors;
+      !this.$v.newAsg.dueDate.required && errors.push("date required");
       return errors;
     },
   },
