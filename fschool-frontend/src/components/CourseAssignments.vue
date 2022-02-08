@@ -154,7 +154,7 @@
               <span class="mr-1">||</span>
               <v-icon
                 class="mr-1"
-                @click="opendeliverable(assignment.id)"
+                @click="opendeliverable()"
                 v-show="canAdd"
               >
                 mdi-comment-multiple-outline
@@ -174,7 +174,7 @@
                     v-bind="attrs"
                     v-on="on"
                     v-show="canaddwork"
-                    @click="addworkError = false"
+                    @click="addworkError = false, openAssignment(assignment.id)"
                   >
                     <v-icon>mdi-cloud-upload</v-icon>
                   </v-btn>
@@ -217,7 +217,7 @@
                     <v-btn
                       color="blue darken-1"
                       text
-                      @click="addwork(assignment.id)"
+                      @click="addwork()"
                       >Submit</v-btn
                     >
                   </v-card-actions>
@@ -324,6 +324,7 @@ export default {
     },
   },
   data: () => ({
+    assignmentId: "",
     canAdd: true,
     canaddwork: true,
     showdeliverable: false,
@@ -374,6 +375,9 @@ export default {
   },
 
   methods: {
+    openAssignment(id){
+      this.assignmentId = id;
+    },
     async initialize() {
       this.assignments = [];
       this.currentCourse = this.$route.params.code;
@@ -432,16 +436,15 @@ export default {
       } else if (networkError) {
         this.addassError = true;
         this.assError = "Network Error,Try Again";
-        console.log(this.newAsg);
       }
     },
-    async addwork(asgId) {
+    async addwork() {
       this.$v.$touch();
       if (this.$v.newdeliver.body.$invalid) return;
       let response,
         networkError = false;
       await AXIOS.post(
-        `deliverable/?assignmentId=${asgId}`,
+        `deliverable/?assignmentId=${this.assignmentId}`,
         this.newdeliver.body,
         { headers: { "Content-Type": "text/plain" } }
       )
@@ -460,6 +463,7 @@ export default {
       }
     },
     closeworkDialog() {
+      this.assignmentId = "";
       this.$v.$reset();
       this.addworkdialog = false;
       this.$nextTick(() => {
