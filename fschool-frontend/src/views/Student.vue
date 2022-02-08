@@ -79,7 +79,7 @@
           <course-assignments  :userRole="'student'" />
         </div>
         <div v-if="showCalendar">
-          <h2>To Do Calendar</h2>
+          <calendar/>
         </div>
       </div>
     </v-main>
@@ -89,12 +89,14 @@
 <script>
 import UserCourses from "../components/UserCourses.vue";
 import CourseAssignments from "../components/CourseAssignments.vue";
+import Calendar from "../components/CalendarComp.vue"
 
 export default {
   name: "student",
   components: {
     UserCourses,
     CourseAssignments,
+    Calendar
   },
   data() {
     return {

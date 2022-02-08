@@ -5,13 +5,19 @@
         <v-card-title
           class="text-h3 text--primary font-weight-bold"
           @click="initialize()"
-        >Assignments</v-card-title>
+          >Assignments</v-card-title
+        >
       </v-col>
       <v-col>
         <v-btn icon @click="initialize()" color="primary" dark>
           <v-icon>mdi-refresh</v-icon>
         </v-btn>
-        <v-dialog v-model="Assdialog" persistent :retain-focus="false" max-width="600px">
+        <v-dialog
+          v-model="Assdialog"
+          persistent
+          :retain-focus="false"
+          max-width="600px"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               icon
@@ -89,6 +95,8 @@
                         @blur="$v.newAsg.dueDate.$touch()"
                         @change="$refs.menu.save(newAsg.dueDate)"
                       ></v-date-picker>
+                      <!--TODO:  integrate this time picker -->
+                      <v-time-picker format="24hr" use-seconds></v-time-picker>
                     </v-menu>
                   </v-col>
                 </v-row>
@@ -99,9 +107,12 @@
                 v-show="addassError"
                 type="error"
                 style="font-size: 19px; font-weight: bold"
-              >Error adding assignment:{{ assError }}</v-alert>
+                >Error adding assignment:{{ assError }}</v-alert
+              >
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeAssdialog()">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="closeAssdialog()"
+                >Cancel</v-btn
+              >
               <v-btn color="blue darken-1" text @click="addAsg()">Add</v-btn>
             </v-card-actions>
           </v-card>
@@ -113,25 +124,41 @@
         <v-card-title>
           <v-icon large left></v-icon>
 
-          <span class="text-h4 font-weight-bold" v-text="assignment.title"></span>
-           <v-spacer></v-spacer>
-           <span class="text-h6 font-weight-bold" v-text="assignment.course.code"></span>
+          <span
+            class="text-h4 font-weight-bold"
+            v-text="assignment.title"
+          ></span>
+          <v-spacer></v-spacer>
+          <span
+            class="text-h6 font-weight-bold"
+            v-text="assignment.course.code"
+          ></span>
         </v-card-title>
 
-        <v-card-text class="text-h5 font-weight-bold" v-text="assignment.body"></v-card-text>
+        <v-card-text
+          class="text-h5 font-weight-bold"
+          v-text="assignment.body"
+        ></v-card-text>
 
         <v-card-actions>
           <v-list-item class="grow">
-            <span
-                class="subheading mr-2"
-              >{{ new Date(assignment.assigned_On).toLocaleString("en-GB") }}</span>
+            <span class="subheading mr-2">{{
+              new Date(assignment.assigned_On).toLocaleString("en-GB")
+            }}</span>
             <v-row align="center" justify="end">
-            <span>Due by:</span>
-            <span class="subheading mr-2">{{ new Date(assignment.dueDate).toLocaleString("en-GB") }}</span>
-              
+              <span>Due by:</span>
+              <span class="subheading mr-2">{{
+                new Date(assignment.dueDate).toLocaleString("en-GB")
+              }}</span>
+
               <span class="mr-1">||</span>
 
-              <v-dialog v-model="addworkdialog" persistent :retain-focus="false" max-width="600px">
+              <v-dialog
+                v-model="addworkdialog"
+                persistent
+                :retain-focus="false"
+                max-width="600px"
+              >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
@@ -174,10 +201,18 @@
                       v-show="addworkError"
                       type="error"
                       style="font-size: 19px; font-weight: bold"
-                    >Error adding work:{{ workError }}</v-alert>
+                      >Error adding work:{{ workError }}</v-alert
+                    >
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="closeworkDialog()">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="addwork(assignment.id)">Submit</v-btn>
+                    <v-btn color="blue darken-1" text @click="closeworkDialog()"
+                      >Cancel</v-btn
+                    >
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="addwork(assignment.id)"
+                      >Submit</v-btn
+                    >
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -210,7 +245,7 @@ export default {
   },
   data: () => ({
     canAdd: true,
-    canaddwork:true,
+    canaddwork: true,
     assignments: [],
     Assdialog: false,
     addworkdialog: false,
@@ -258,28 +293,26 @@ export default {
 
   methods: {
     async initialize() {
-      
       this.assignments = [];
       this.currentCourse = this.$route.params.code;
 
-      if(typeof this.currentCourse === 'undefined' ){
-        this.canAdd=false;
+      if (typeof this.currentCourse === "undefined") {
+        this.canAdd = false;
+        await AXIOS.get("assignments", {}).then((res) => {
+          this.assignments = res.data;
+        });
+      } else {
         await AXIOS.get(
-        "assignments",{}
-      ).then((res) => {
-        this.assignments = res.data;
-      });
+          `courseAssignments/?courseCode=${this.currentCourse}`,
+          {}
+        ).then((res) => {
+          this.assignments = res.data;
+        });
       }
-      else{await AXIOS.get(
-        `courseAssignments/?courseCode=${this.currentCourse}`,{}
-      ).then((res) => {
-        this.assignments = res.data;
-      });}
-      
     },
     //sending assignment
     async addAsg() {
-      this.newAsg.dueDate=this.newAsg.dueDate +" 23:59:59";
+      this.newAsg.dueDate = this.newAsg.dueDate + " 23:59:59";
       this.$v.$touch();
       if (
         this.$v.newAsg.title.$invalid ||
@@ -289,11 +322,13 @@ export default {
         return;
       let response,
         networkError = false;
-        
-      await AXIOS.post(`assignment/?courseCode=${this.currentCourse}`, this.newAsg )
+
+      await AXIOS.post(
+        `assignment/?courseCode=${this.currentCourse}`,
+        this.newAsg
+      )
         .then((res) => {
           response = res.data;
-         
         })
         .catch(() => {
           networkError = true;
@@ -302,7 +337,7 @@ export default {
       if (response != 0 && response != null) {
         this.closeAssdialog();
         this.assignments.unshift(response);
-         this.initialize();
+        this.initialize();
       } else if (networkError) {
         this.addassError = true;
         this.assError = "Network Error,Try Again";
@@ -310,12 +345,11 @@ export default {
       }
     },
     async addwork(asgId) {
-
       this.$v.$touch();
       if (this.$v.newdeliver.body.$invalid) return;
       let response,
         networkError = false;
-      await AXIOS.post(`deliverable/?assignmentId=${asgId}`, this.newdeliver)
+      await AXIOS.post(`deliverable/?assignmentId=${asgId}`, this.newdeliver.body,{headers: {"Content-Type": "text/plain"}})
         .then((res) => {
           response = res.data;
         })

@@ -35,6 +35,7 @@
             @click:append="show = !show"
             @input="$v.password.$touch()"
             @blur="$v.password.$touch()"
+            @keydown.enter="signIn"
           ></v-text-field>
           <br />
           <v-btn class="mr-15" color="success" @click="signIn">Sign In</v-btn>
