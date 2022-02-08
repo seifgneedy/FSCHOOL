@@ -71,6 +71,7 @@
                       offset-y
                       min-width="auto"
                     >
+                    
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                           v-model="newAsg.dueDate"
@@ -95,8 +96,27 @@
                         @blur="$v.newAsg.dueDate.$touch()"
                         @change="$refs.menu.save(newAsg.dueDate)"
                       ></v-date-picker>
-                      <!--TODO:  integrate this time picker -->
-                      <v-time-picker format="24hr" use-seconds></v-time-picker>
+                    </v-menu>
+                    <v-menu
+                     ref="menu"
+                      v-model="timeMenu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="time"
+                          label="Due time"
+                          prepend-icon="mdi-alarm"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-time-picker format="24hr" use-seconds   v-model="time"></v-time-picker>
+
                     </v-menu>
                   </v-col>
                 </v-row>
@@ -325,6 +345,8 @@ export default {
   },
   data: () => ({
     assignmentId: "",
+    time: "23:59:59",
+    timeMenu: false,
     canAdd: true,
     canaddwork: true,
     showdeliverable: false,
@@ -375,9 +397,7 @@ export default {
   },
 
   methods: {
-    openAssignment(id){
-      this.assignmentId = id;
-    },
+
     async initialize() {
       this.assignments = [];
       this.currentCourse = this.$route.params.code;
@@ -396,6 +416,9 @@ export default {
         });
       }
     },
+    openAssignment(id){
+      this.assignmentId = id;
+    },
     async opendeliverable(AssgId) {
       await AXIOS.get(
         `assignmentDeliverables/?assignmentId=${AssgId}`,
@@ -407,7 +430,7 @@ export default {
     },
     //sending assignment
     async addAsg() {
-      this.newAsg.dueDate = this.newAsg.dueDate + " 23:59:59";
+      this.newAsg.dueDate = this.newAsg.dueDate + " " + this.time;
       this.$v.$touch();
       if (
         this.$v.newAsg.title.$invalid ||
