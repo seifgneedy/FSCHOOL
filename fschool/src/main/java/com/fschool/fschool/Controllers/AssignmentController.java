@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = { "http://localhost:8080" },
             allowCredentials = "true")
 @RestController
-    //TODO CookieValue instead of ids
 public class AssignmentController {
     @Autowired
     AssignmentService assignmentService;

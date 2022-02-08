@@ -152,7 +152,11 @@
               }}</span>
 
               <span class="mr-1">||</span>
-              <v-icon class="mr-1" @click="opendeliverable(assignment.id)" v-show="canAdd">
+              <v-icon
+                class="mr-1"
+                @click="opendeliverable(assignment.id)"
+                v-show="canAdd"
+              >
                 mdi-comment-multiple-outline
               </v-icon>
 
@@ -220,55 +224,78 @@
                 </v-card>
               </v-dialog>
               <v-dialog
-              v-model="showdeliverable"
-              max-width="800px"
-              :retain-focus="false"
-            >
-              <v-card align="center">
-                <v-col v-for="deliverable in deliverables" :key="deliverable.id">
-                  <v-card class="mx-auto" color="#0F0639" dark max-width="600">
-                    <v-card-text
-                      class="text-h5 font-weight-bold"
-                      v-text="deliverable.body"
-                    >
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-list-item class="grow">
-                        <v-list-item-avatar color="grey darken-3">
-                          <v-img
-                            class="elevation-6"
-                            src="@/assets/publisher.svg"
-                          ></v-img>
-                        </v-list-item-avatar>
-                        <v-card-action>
-                          <v-text color="deep-purple lighten-2">
-                            {{
-                              deliverable.user.firstName +
-                              " " +
-                              deliverable.user.lastName
-                            }}
-                          </v-text>
-                        </v-card-action>
-                        <v-row align="center" justify="end">
-                          <span class="subheading mr-2"
-                            >{{
-                              new Date(deliverable.SubmissionDate).toLocaleString("en-GB")
-                            }}
-                          </span>
-                        </v-row>
-                      </v-list-item>
-                    </v-card-actions>
-                  </v-card>
-                </v-col>
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn color="blue darken-1" dark @click="closedeliverable()"
-                    >Close</v-btn
+                v-model="showdeliverable"
+                max-width="800px"
+                :retain-focus="false"
+              >
+                <v-card align="center">
+                  <v-col
+                    v-for="deliverable in deliverables"
+                    :key="deliverable.id"
                   >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-              
+                    <v-card
+                      class="mx-auto"
+                      color="#0F0639"
+                      dark
+                      max-width="600"
+                    >
+        <v-card-title>
+          <v-icon large left></v-icon>
+
+          <span
+          ></span>
+          <v-spacer></v-spacer>
+          <span
+            class="text-h6 font-weight-bold"
+            v-text="'Grade: ' + deliverable.grade"
+          ></span>
+        </v-card-title>
+                      <v-card-text
+                        class="text-h4 font-weight-bold"
+                        v-text="deliverable.body"
+                      >
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-list-item class="grow">
+                          <v-list-item-avatar color="grey darken-3">
+                            <v-img
+                              class="elevation-6"
+                              src="@/assets/publisher.svg"
+                            ></v-img>
+                          </v-list-item-avatar>
+                          <v-card-action>
+                            <v-text color="deep-purple lighten-2">
+                              {{
+                                deliverable.user.firstName +
+                                " " +
+                                deliverable.user.lastName
+                              }}
+                            </v-text>
+                          </v-card-action>
+                          <v-row align="center" justify="end">
+                            <span class="subheading mr-2"
+                              >{{
+                                new Date(
+                                  deliverable.submissionDate
+                                ).toLocaleString("en-GB")
+                              }}
+                            </span>
+                          </v-row>
+                        </v-list-item>
+                      </v-card-actions>
+                    </v-card>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      color="blue darken-1"
+                      dark
+                      @click="closedeliverable()"
+                      >Close</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-row>
           </v-list-item>
         </v-card-actions>
@@ -299,10 +326,10 @@ export default {
   data: () => ({
     canAdd: true,
     canaddwork: true,
-    showdeliverable:false,
+    showdeliverable: false,
     assignments: [],
     Assdialog: false,
-    deliverables:[],
+    deliverables: [],
     addworkdialog: false,
     addworkError: false,
     workError: "",
@@ -366,7 +393,10 @@ export default {
       }
     },
     async opendeliverable(AssgId) {
-      await AXIOS.get(`assignmentDeliverables/?assignmentId=${AssgId}`, {}).then((res) => {
+      await AXIOS.get(
+        `assignmentDeliverables/?assignmentId=${AssgId}`,
+        {}
+      ).then((res) => {
         this.deliverables = res.data;
       });
       this.showdeliverable = true;
@@ -410,7 +440,11 @@ export default {
       if (this.$v.newdeliver.body.$invalid) return;
       let response,
         networkError = false;
-      await AXIOS.post(`deliverable/?assignmentId=${asgId}`, this.newdeliver.body,{headers: {"Content-Type": "text/plain"}})
+      await AXIOS.post(
+        `deliverable/?assignmentId=${asgId}`,
+        this.newdeliver.body,
+        { headers: { "Content-Type": "text/plain" } }
+      )
         .then((res) => {
           response = res.data;
         })
@@ -432,7 +466,7 @@ export default {
         this.newdeliver = Object.assign({}, this.defultnewdeliver);
       });
     },
-     closedeliverable() {
+    closedeliverable() {
       this.showdeliverable = false;
     },
     closeAssdialog() {

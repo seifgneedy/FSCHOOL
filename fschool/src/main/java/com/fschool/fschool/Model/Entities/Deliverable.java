@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Embeddable
@@ -37,7 +36,7 @@ public class Deliverable {
 
     @Column(nullable = false)
     @UpdateTimestamp
-    private LocalDateTime SubmissionDate;
+    private LocalDateTime submissionDate;
 
     @Column(nullable = false)
     private String body;
@@ -70,11 +69,11 @@ public class Deliverable {
     }
 
     public LocalDateTime getSubmissionDate() {
-        return SubmissionDate;
+        return submissionDate;
     }
 
     public void setSubmissionDate(LocalDateTime submissionDate) {
-        SubmissionDate = submissionDate;
+        this.submissionDate = submissionDate;
     }
 
     public String getBody() {
