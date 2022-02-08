@@ -50,21 +50,7 @@
               </v-list-item-icon>
               <v-list-item-title id="mainItem"> Assignments </v-list-item-title>
             </v-list-item>
-            <v-list-item
-              link
-              @click="
-                showCourses = false;
-                showAssignments = false;
-                showCalendar = true;
-              "
-            >
-              <v-list-item-icon>
-                <v-list-item-avatar>
-                  <v-img src="@/assets/calendar.png" />
-                </v-list-item-avatar>
-              </v-list-item-icon>
-              <v-list-item-title id="mainItem"> Calendar </v-list-item-title>
-            </v-list-item>
+            
             <br /><br />
             <br /><br /><br />
             <v-btn block dark @click="signOut">Sign Out</v-btn>
@@ -76,7 +62,7 @@
           <user-courses :userRole="'teacher'" />
         </div>
         <div v-if="showAssignments">
-          <h2>To Do Assignments</h2>
+          <course-assignments  :userRole="'teacher'" />
         </div>
         <div v-if="showCalendar">
           <h2>To Do Calendar</h2>
@@ -88,11 +74,13 @@
 
 <script>
 import UserCourses from "../components/UserCourses.vue";
+import CourseAssignments from "../components/CourseAssignments.vue";
 
 export default {
   name: "teacher",
   components: {
     UserCourses,
+    CourseAssignments,
   },
   data() {
     return {

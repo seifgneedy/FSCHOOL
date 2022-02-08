@@ -8,13 +8,15 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Embeddable
 @Entity(name = "Deliverable")
 @Table(name = "deliverable")
 public class Deliverable {
-    public Deliverable(){}
+    public Deliverable() {
+    }
+
     public Deliverable(Assignment assignment, User user) {
         this.assignment = assignment;
         this.user = user;
@@ -34,7 +36,7 @@ public class Deliverable {
     private User user;
 
     @Column(nullable = false)
-    @CreationTimestamp
+    @UpdateTimestamp
     private LocalDateTime SubmissionDate;
 
     @Column(nullable = false)
@@ -42,7 +44,6 @@ public class Deliverable {
 
     @Column(nullable = false)
     private String grade = "-";
-
 
     public DeliverableID getId() {
         return id;

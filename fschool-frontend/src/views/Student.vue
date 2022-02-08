@@ -76,7 +76,7 @@
           <user-courses :userRole="'student'" />
         </div>
         <div v-if="showAssignments">
-          <h2>To Do Assignments</h2>
+          <course-assignments  :userRole="'student'" />
         </div>
         <div v-if="showCalendar">
           <h2>To Do Calendar</h2>
@@ -88,11 +88,13 @@
 
 <script>
 import UserCourses from "../components/UserCourses.vue";
+import CourseAssignments from "../components/CourseAssignments.vue";
 
 export default {
   name: "student",
   components: {
     UserCourses,
+    CourseAssignments,
   },
   data() {
     return {

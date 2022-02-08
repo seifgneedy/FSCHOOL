@@ -5,20 +5,13 @@
         <v-card-title
           class="text-h3 text--primary font-weight-bold"
           @click="initialize()"
-        >
-          Assignments
-        </v-card-title>
+        >Assignments</v-card-title>
       </v-col>
       <v-col>
         <v-btn icon @click="initialize()" color="primary" dark>
           <v-icon>mdi-refresh</v-icon>
         </v-btn>
-        <v-dialog
-          v-model="Assdialog"
-          persistent
-          :retain-focus="false"
-          max-width="600px"
-        >
+        <v-dialog v-model="Assdialog" persistent :retain-focus="false" max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               icon
@@ -39,7 +32,7 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4"> </v-col>
+                  <v-col cols="12" sm="6" md="4"></v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       name="Title"
@@ -106,13 +99,10 @@
                 v-show="addassError"
                 type="error"
                 style="font-size: 19px; font-weight: bold"
-                >Error adding assignment:{{ assError }}</v-alert
-              >
+              >Error adding assignment:{{ assError }}</v-alert>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeAssdialog()">
-                Cancel
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="addAsg()"> Add </v-btn>
+              <v-btn color="blue darken-1" text @click="closeAssdialog()">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="addAsg()">Add</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -121,35 +111,27 @@
     <v-col v-for="assignment in assignments" :key="assignment.id">
       <v-card color="#0F0639" dark max-width="600">
         <v-card-title>
-          <v-icon large left> </v-icon>
+          <v-icon large left></v-icon>
 
-          <span
-            class="text-h4 font-weight-bold"
-            v-text="assignment.title"
-          ></span>
+          <span class="text-h4 font-weight-bold" v-text="assignment.title"></span>
+           <v-spacer></v-spacer>
+           <span class="text-h6 font-weight-bold" v-text="assignment.course.code"></span>
         </v-card-title>
 
-        <v-card-text class="text-h5 font-weight-bold" v-text="assignment.body">
-        </v-card-text>
+        <v-card-text class="text-h5 font-weight-bold" v-text="assignment.body"></v-card-text>
 
         <v-card-actions>
           <v-list-item class="grow">
-            <span> DueDate: </span>
-            <span class="subheading mr-2"
-              >{{ new Date(assignment.dueDate).toLocaleString("en-GB") }}
-            </span>
+            <span
+                class="subheading mr-2"
+              >{{ new Date(assignment.assigned_On).toLocaleString("en-GB") }}</span>
             <v-row align="center" justify="end">
-              <span class="subheading mr-2"
-                >{{ new Date(assignment.assigned_On).toLocaleString("en-GB") }}
-              </span>
+            <span>Due by:</span>
+            <span class="subheading mr-2">{{ new Date(assignment.dueDate).toLocaleString("en-GB") }}</span>
+              
               <span class="mr-1">||</span>
 
-              <v-dialog
-                v-model="addworkdialog"
-                persistent
-                :retain-focus="false"
-                max-width="600px"
-              >
+              <v-dialog v-model="addworkdialog" persistent :retain-focus="false" max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     icon
@@ -157,7 +139,8 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    @click="addassError = false"
+                    v-show="canaddwork"
+                    @click="addworkError = false"
                   >
                     <v-icon>mdi-cloud-upload</v-icon>
                   </v-btn>
@@ -169,11 +152,11 @@
                   <v-card-text>
                     <v-container>
                       <v-row>
-                        <v-col cols="12" sm="6" md="4"> </v-col>
+                        <v-col cols="12" sm="6" md="4"></v-col>
                         <v-col cols="12">
                           <v-textarea
-                            name="Body"
-                            label="Body / link for your work"
+                            name="body"
+                            label="body / link for your work"
                             :error-messages="workBodyError"
                             v-model="newdeliver.body"
                             outlined
@@ -191,23 +174,10 @@
                       v-show="addworkError"
                       type="error"
                       style="font-size: 19px; font-weight: bold"
-                      >Error adding work:{{ workError }}</v-alert
-                    >
+                    >Error adding work:{{ workError }}</v-alert>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="closeworkDialog()"
-                    >
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="addwork(assignment.id)"
-                    >
-                      Submit
-                    </v-btn>
+                    <v-btn color="blue darken-1" text @click="closeworkDialog()">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="addwork(assignment.id)">Submit</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -226,13 +196,13 @@ export default {
   props: ["userRole"],
   components: {},
   watch: {
-    postType: {
+    userRole: {
       immediate: true,
       handler() {
         if (this.userRole == "student") this.canAdd = false;
         else {
           this.canAdd = true;
-          this.addworkdialog = false;
+          this.canaddwork = false;
         }
         this.initialize();
       },
@@ -240,6 +210,7 @@ export default {
   },
   data: () => ({
     canAdd: true,
+    canaddwork:true,
     assignments: [],
     Assdialog: false,
     addworkdialog: false,
@@ -278,7 +249,7 @@ export default {
         required,
       },
     },
-    newassignment: {
+    newdeliver: {
       body: {
         required,
       },
@@ -287,17 +258,28 @@ export default {
 
   methods: {
     async initialize() {
+      
       this.assignments = [];
       this.currentCourse = this.$route.params.code;
-      await AXIOS.get(
-        `courseAssignments/?courseCode=${this.currentCourse}`,
-        {}
+
+      if(typeof this.currentCourse === 'undefined' ){
+        this.canAdd=false;
+        await AXIOS.get(
+        "assignments",{}
       ).then((res) => {
         this.assignments = res.data;
       });
+      }
+      else{await AXIOS.get(
+        `courseAssignments/?courseCode=${this.currentCourse}`,{}
+      ).then((res) => {
+        this.assignments = res.data;
+      });}
+      
     },
     //sending assignment
     async addAsg() {
+      this.newAsg.dueDate=this.newAsg.dueDate +" 23:59:59";
       this.$v.$touch();
       if (
         this.$v.newAsg.title.$invalid ||
@@ -307,12 +289,11 @@ export default {
         return;
       let response,
         networkError = false;
-      await AXIOS.post(
-        `assignment/?courseCode=${this.currentCourse}`,
-        this.newAsg
-      )
+        
+      await AXIOS.post(`assignment/?courseCode=${this.currentCourse}`, this.newAsg )
         .then((res) => {
           response = res.data;
+         
         })
         .catch(() => {
           networkError = true;
@@ -321,14 +302,17 @@ export default {
       if (response != 0 && response != null) {
         this.closeAssdialog();
         this.assignments.unshift(response);
+         this.initialize();
       } else if (networkError) {
         this.addassError = true;
         this.assError = "Network Error,Try Again";
+        console.log(this.newAsg);
       }
     },
     async addwork(asgId) {
+
       this.$v.$touch();
-      if (this.$v.newassignment.body.$invalid) return;
+      if (this.$v.newdeliver.body.$invalid) return;
       let response,
         networkError = false;
       await AXIOS.post(`deliverable/?assignmentId=${asgId}`, this.newdeliver)
