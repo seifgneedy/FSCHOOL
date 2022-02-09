@@ -174,10 +174,10 @@
               <span class="mr-1">||</span>
               <v-icon
                 class="mr-1"
-                @click="opendeliverable()"
+                @click="opendeliverable(assignment.id)"
                 v-show="canAdd"
               >
-                mdi-comment-multiple-outline
+                mdi-comment-check-outline
               </v-icon>
 
               <v-dialog
