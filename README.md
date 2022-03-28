@@ -30,18 +30,18 @@ For full design details open the design folder.
 
 ## Screenshots:
 ### Adding Teachers
-![Adding teachers](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/2.PNG)
+![Adding teachers](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/2.PNG?raw=true)
 ### Adding Students
-![Adding Students](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/3.PNG)
+![Adding Students](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/3.PNG?raw=true)
 ### Adding Courses
-![Adding Courses](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/1.PNG)
+![Adding Courses](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/1.PNG?raw=true)
 ### Edit a course / Add Teachers and students to a course
-![Edit a course / Add Teachers and students to a course](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/5.PNG)
+![Edit a course / Add Teachers and students to a course](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/5.PNG?raw=true)
 ### View my courses
-![View my courses](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/6.PNG)
+![View my courses](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/6.PNG?raw=true)
 ### Student view assignments
-![Student view assignments](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/7.PNG)
+![Student view assignments](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/7.PNG?raw=true)
 ### Student view calender
-![Student view calender](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/8.PNG)
+![Student view calender](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/8.PNG?raw=true)
 ### Student view announcements
-![Student view announcements](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/9.PNG)
+![Student view announcements](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/9.PNG?raw=true)
