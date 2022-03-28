@@ -31,7 +31,7 @@ public class Course {
     private Set<Post> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonBackReference(value = "posts")    
+    @JsonBackReference(value = "assignments")    
     private Set<Assignment> assignments = new HashSet<>();
 
     public String getCode() {
