@@ -2,8 +2,8 @@
 ![Vuetify](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=AEDDFF)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+
 # FSCHOOL
-## Agile عربية الفول
 
 # App Description  
 A web-based Classroom application to connect students and teachers like Google Classroom.  
@@ -28,3 +28,20 @@ For full design details open the design folder.
 * Every student has his own calender with due dates of his assignments.
 * Cookies are used to manage the user session.
 
+## Screenshots:
+### Adding Teachers
+![Adding teachers](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/2.PNG)
+### Adding Students
+![Adding Students](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/3.PNG)
+### Adding Courses
+![Adding Courses](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/1.PNG)
+### Edit a course / Add Teachers and students to a course
+![Edit a course / Add Teachers and students to a course](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/5.PNG)
+### View my courses
+![View my courses](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/6.PNG)
+### Student view assignments
+![Student view assignments](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/7.PNG)
+### Student view calender
+![Student view calender](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/8.PNG)
+### Student view announcements
+![Student view announcements](https://github.com/seifgneedy/FSCHOOL/blob/master/Screenshots/9.PNG)
