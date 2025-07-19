@@ -79,6 +79,12 @@ public class PostRepositoryTest {
         user.setPassword(DigestUtils.sha256Hex("NOW_pass"));
         userRepository.save(user);
     }
+
+    @AfterAll
+    private static void removeAllPosts(@Autowired PostRepository postRepository) {
+        postRepository.deleteAll();
+    }
+
     @Test 
     @Order(1)
     public void injectedComponentsIsNotNull() {
