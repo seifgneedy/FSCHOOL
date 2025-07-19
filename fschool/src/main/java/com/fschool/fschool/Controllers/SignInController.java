@@ -9,7 +9,7 @@ import com.fschool.fschool.Model.Services.AuthenticationService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = { "http://localhost:8080" },
+@CrossOrigin(origins = { "http://localhost:8081" },
             allowCredentials = "true")
 @RestController
 public class SignInController {

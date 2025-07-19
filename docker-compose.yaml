@@ -1,0 +1,50 @@
+services:
+  mysql-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: fschool
+    ports:
+      - 3306:3306
+    # volumes:
+    #   - mysql_data:/var/lib/mysql
+    healthcheck:
+      # fschool-backend waits until mysql-db is healthy before starting.
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fschool
+
+  fschool-backend:
+    build: fschool/
+    container_name: fschool-backend
+    depends_on:
+      - mysql-db
+    ports:
+      - 9000:9000
+    environment:
+      PORT: 9000
+      DB_URL: jdbc:mysql://mysql-db/fschool
+      DB_USERNAME: root
+      DB_PASS: 12345678
+    networks:
+      - fschool
+
+  fschool-frontend:
+    build:
+      fschool-frontend/
+    ports:
+      - 8081:80
+    depends_on:
+      - fschool-backend
+    networks:
+      - fschool
+
+# volumes:
+#   mysql_data:
+
+networks:
+  fschool:
+    driver: bridge

@@ -2,6 +2,7 @@
 ![Vuetify](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=AEDDFF)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%2300f.svg?style=for-the-badge&logo=docker&logoColor=white)
 
 # FSCHOOL
 
@@ -13,6 +14,7 @@ For full design details open the design folder.
 * Front-end: Vue.js
 * Back-end: Spring Boot, Spring JPA
 * DataBase: MySQL
+* Containerization: Docker
 
 ## Features:
 * Admins add students, teachers, and other admins to the system.

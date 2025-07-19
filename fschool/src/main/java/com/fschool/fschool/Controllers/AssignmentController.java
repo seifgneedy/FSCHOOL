@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@CrossOrigin(origins = { "http://localhost:8080" },
+@CrossOrigin(origins = { "http://localhost:8081" },
             allowCredentials = "true")
 @RestController
 public class AssignmentController {

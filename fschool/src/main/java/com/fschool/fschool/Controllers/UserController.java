@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 
-@CrossOrigin(origins = { "http://localhost:8080" },
+@CrossOrigin(origins = { "http://localhost:8081" },
             allowCredentials = "true")
 @RestController
 public class UserController {
